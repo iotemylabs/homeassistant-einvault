@@ -1,0 +1,4 @@
+{
+  "message": "This token is write-only.",
+  "code": "writeScopeReadOnly"
+}

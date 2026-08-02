@@ -1,0 +1,16 @@
+{
+  "companions": [
+    {
+      "id": "gnc6gumwexrp3cs",
+      "name": "Cindy",
+      "species": "dog",
+      "isActive": true
+    },
+    {
+      "id": "ztmzsi6kq5lc2wl",
+      "name": "Lilly",
+      "species": "dog",
+      "isActive": true
+    }
+  ]
+}

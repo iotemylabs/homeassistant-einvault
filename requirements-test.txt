@@ -1,0 +1,5 @@
+pytest-homeassistant-custom-component==0.13.196
+aioresponses==0.7.7
+syrupy==4.8.0
+ruff==0.8.4
+mypy==1.14.0

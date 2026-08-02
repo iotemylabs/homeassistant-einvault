@@ -1,0 +1,74 @@
+[project]
+name = "ha-einvault"
+version = "0.1.0"
+description = "Home Assistant custom integration for EinVault"
+requires-python = ">=3.12"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["custom_components", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "A",    # builtins shadowing
+    "ASYNC",
+    "B",    # bugbear
+    "C4",
+    "D",    # pydocstyle
+    "E",
+    "F",
+    "I",    # isort
+    "N",
+    "PGH",
+    "PL",
+    "RUF",
+    "SIM",
+    "T20",  # no print
+    "UP",
+    "W",
+]
+ignore = [
+    "D203",  # conflicts with D211
+    "D213",  # conflicts with D212
+    "PLR0913",  # API methods legitimately take many keyword-only arguments
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D100", "D103", "PLR2004"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = ["custom_components"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+disallow_any_generics = false
+plugins = []
+follow_imports = "silent"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+strict = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "--cov=custom_components.einvault --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["custom_components/einvault"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]

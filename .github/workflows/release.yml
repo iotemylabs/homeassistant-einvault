@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Package and attach
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync manifest version to the tag
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          python - "$version" <<'PY'
+          import json, pathlib, sys
+          version = sys.argv[1]
+          path = pathlib.Path("custom_components/einvault/manifest.json")
+          manifest = json.loads(path.read_text())
+          manifest["version"] = version
+          path.write_text(json.dumps(manifest, indent=2) + "\n")
+          print(f"manifest version set to {version}")
+          PY
+
+      - name: Create zip
+        run: |
+          cd custom_components/einvault
+          zip -r einvault.zip . -x '*.pyc' -x '__pycache__/*'
+
+      - name: Attach zip to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: custom_components/einvault/einvault.zip

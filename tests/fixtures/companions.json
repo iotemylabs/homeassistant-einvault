@@ -1,0 +1,52 @@
+{
+  "companions": [
+    {
+      "id": "gnc6gumwexrp3cs",
+      "name": "Cindy",
+      "species": "dog",
+      "breed": "American Longhair",
+      "dob": "2010-05-01",
+      "sex": "female",
+      "weightUnit": "lbs",
+      "microchip": null,
+      "bio": "Cat",
+      "feedingSchedule": null,
+      "walkSchedule": null,
+      "medicationSchedule": null,
+      "emergencyContactName": null,
+      "emergencyContactPhone": null,
+      "vetName": null,
+      "vetPhone": null,
+      "vetClinic": null,
+      "notesForSitter": null,
+      "isActive": true,
+      "archivedAt": null,
+      "archiveNote": null,
+      "createdAt": "2026-08-02T19:24:29.000Z"
+    },
+    {
+      "id": "ztmzsi6kq5lc2wl",
+      "name": "Lilly",
+      "species": "dog",
+      "breed": "German Shepherd",
+      "dob": "2024-09-05",
+      "sex": "female",
+      "weightUnit": "lbs",
+      "microchip": null,
+      "bio": "Smart and kind dog, currently with parent's dogs for now.",
+      "feedingSchedule": null,
+      "walkSchedule": null,
+      "medicationSchedule": null,
+      "emergencyContactName": null,
+      "emergencyContactPhone": null,
+      "vetName": null,
+      "vetPhone": null,
+      "vetClinic": null,
+      "notesForSitter": null,
+      "isActive": true,
+      "archivedAt": null,
+      "archiveNote": null,
+      "createdAt": "2026-08-02T19:39:34.000Z"
+    }
+  ]
+}

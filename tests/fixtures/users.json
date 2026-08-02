@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": "4gy73h3nxgljlt7",
+      "username": "alex",
+      "displayName": "Alex Doe",
+      "role": "admin",
+      "isActive": true
+    }
+  ],
+  "hasMore": false
+}

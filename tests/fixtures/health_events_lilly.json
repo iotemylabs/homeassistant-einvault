@@ -1,0 +1,105 @@
+{
+  "events": [
+    {
+      "id": "cd3523bg7ecqvez",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "vet_visit",
+      "title": "Comprehensive Exam",
+      "notes": "Dr. Rhonda Witt, Dunbar Animal Hospital, Comprehensive Exam\n\nCost: $20.00 | Safeco claimed: No\nReceipt/documentation attached in NocoDB (PDF)",
+      "occurredAt": "2025-02-21T17:00:00.000Z",
+      "vetName": "Dr. Rhonda Witt",
+      "vetClinic": "Dunbar Animal Hospital"
+    },
+    {
+      "id": "bgnnyjwpnuczi4v",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "vaccination",
+      "title": "DHL4PP Vaccine",
+      "notes": "DHL4PP Vaccine\n\nCost: $54.00 | Safeco claimed: No",
+      "occurredAt": "2025-02-21T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    },
+    {
+      "id": "qmkopiwyr54fwip",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "medication",
+      "title": "Interceptor Plus 25.1-50lbs",
+      "notes": "INTERCEPTOR PLUS 25.1--50LBS\n\nCost: $12.69 | Safeco claimed: No",
+      "occurredAt": "2025-02-21T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    },
+    {
+      "id": "2wax2trku4dh5a4",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "vaccination",
+      "title": "Rabies (Initial) 1 Year",
+      "notes": "RABIES (INITIAL) 1 YEAR\n\nCost: $19.00 | Safeco claimed: No",
+      "occurredAt": "2025-02-21T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    },
+    {
+      "id": "3tjissdv47wowck",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "medication",
+      "title": "NexGard 24.1-60lb Dog Large",
+      "notes": "NEXGARD 24.1-60LB DOG LARGE\n\nCost: $26.07 | Safeco claimed: No",
+      "occurredAt": "2025-02-21T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    },
+    {
+      "id": "2757jiersye4l7w",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "vet_visit",
+      "title": "Comprehensive Exam",
+      "notes": "Dr. Erica Marker, Dunbar Animal Hospital, Comprehensive Exam\n\nCost: $20.00 | Safeco claimed: No",
+      "occurredAt": "2025-01-09T17:00:00.000Z",
+      "vetName": "Dr. Erica Marker",
+      "vetClinic": "Dunbar Animal Hospital"
+    },
+    {
+      "id": "xa7sx3pw4qbaofl",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "vaccination",
+      "title": "DHL4PP Vaccine",
+      "notes": "DHL4PP Vaccine\n\nCost: $54.00 | Safeco claimed: No",
+      "occurredAt": "2025-01-09T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    },
+    {
+      "id": "suyiz6ljxm66lv4",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "medication",
+      "title": "Heartgard Plus 136MCG",
+      "notes": "Heartgard Plus 136MCG\n\nCost: $0.00 | Safeco claimed: No",
+      "occurredAt": "2025-01-09T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    },
+    {
+      "id": "u37mccbz27pafdr",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "medication",
+      "title": "Drontal Plus (Dewormer)",
+      "notes": "Drontal Plus (Dewormer)\n\nCost: $12.35 | Safeco claimed: No",
+      "occurredAt": "2025-01-09T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    },
+    {
+      "id": "5chwlx2t2spewnh",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "type": "vaccination",
+      "title": "Vaccination",
+      "notes": "Parvovirus, Parainflunza, Adenovirus Type 2, Canine Distemper\n\nCost: $16.49 | Safeco claimed: No",
+      "occurredAt": "2024-12-25T17:00:00.000Z",
+      "vetName": null,
+      "vetClinic": null
+    }
+  ],
+  "hasMore": false
+}

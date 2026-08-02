@@ -1,0 +1,12 @@
+{
+  "domain": "einvault",
+  "name": "EinVault",
+  "codeowners": ["@iotemylabs"],
+  "config_flow": true,
+  "documentation": "https://github.com/iotemylabs/homeassistant-einvault",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/iotemylabs/homeassistant-einvault/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

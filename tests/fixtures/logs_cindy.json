@@ -1,0 +1,37 @@
+{
+  "events": [
+    {
+      "id": "vqd5oz4qcpiiv6j",
+      "companionId": "gnc6gumwexrp3cs",
+      "type": "walk",
+      "notes": "ha-einvault phase-1 probe",
+      "durationMinutes": 15,
+      "subtypes": [
+        "leash"
+      ],
+      "loggedAt": "2026-08-02T20:01:09.000Z",
+      "eventGroupId": null
+    },
+    {
+      "id": "tdgbnmia52qwc7e",
+      "companionId": "gnc6gumwexrp3cs",
+      "type": "meal",
+      "notes": null,
+      "durationMinutes": null,
+      "subtypes": null,
+      "loggedAt": "2026-08-02T20:00:45.000Z",
+      "eventGroupId": null
+    },
+    {
+      "id": "uiitns7gz66bld4",
+      "companionId": "gnc6gumwexrp3cs",
+      "type": "bathroom",
+      "notes": null,
+      "durationMinutes": null,
+      "subtypes": null,
+      "loggedAt": "2026-08-01T19:49:00.000Z",
+      "eventGroupId": null
+    }
+  ],
+  "hasMore": false
+}

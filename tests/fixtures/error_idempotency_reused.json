@@ -1,0 +1,4 @@
+{
+  "code": "idempotencyKeyReused",
+  "message": "Idempotency-Key reused with a different request body."
+}

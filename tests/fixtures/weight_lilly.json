@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "id": "gv7v3mumgngntvw",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "weight": 46,
+      "unit": "lbs",
+      "notes": null,
+      "recordedAt": "2025-02-21T17:00:00.000Z"
+    },
+    {
+      "id": "jvyhphetg7qgzl2",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "weight": 32.4,
+      "unit": "lbs",
+      "notes": null,
+      "recordedAt": "2025-01-09T17:00:00.000Z"
+    }
+  ],
+  "hasMore": false
+}
