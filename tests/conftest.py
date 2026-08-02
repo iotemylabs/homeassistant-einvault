@@ -115,7 +115,7 @@ def mock_full_refresh(mocked: aioresponses, *, repeat: bool = True) -> None:
     mocked.get(endpoint("/api/users"), payload=load_fixture_json("users.json"), repeat=repeat)
     mocked.get(
         endpoint("/api/reminders"),
-        payload={"reminders": [], "hasMore": False},
+        payload=load_fixture_json("reminders.json"),
         repeat=repeat,
     )
     mocked.get(endpoint("/api/shifts"), payload={"shifts": [], "hasMore": False}, repeat=repeat)

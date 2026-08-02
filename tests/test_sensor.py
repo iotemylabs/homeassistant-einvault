@@ -49,10 +49,22 @@ async def test_entities_created_per_companion(
         assert f"{mock_config_entry.entry_id}_{CINDY_ID}_{suffix}" in keys
         assert f"{mock_config_entry.entry_id}_{LILLY_ID}_{suffix}" in keys
 
-    # Instance-scoped diagnostic sensor.
+    for suffix in ("due_reminders", "next_reminder", "reminder_overdue"):
+        assert f"{mock_config_entry.entry_id}_{CINDY_ID}_{suffix}" in keys
+        assert f"{mock_config_entry.entry_id}_{LILLY_ID}_{suffix}" in keys
+
+    # Instance-scoped entities.
     assert f"{mock_config_entry.entry_id}_api_calls_last_refresh" in keys
-    # 2 companions x 7 + 1 instance sensor
-    assert len(entries) == 15
+    assert f"{mock_config_entry.entry_id}_caretaker_on_shift" in keys
+
+    # The mood sensor is opt-in and off by default.
+    assert f"{mock_config_entry.entry_id}_{CINDY_ID}_today_mood" not in keys
+
+    # No calendar feed URL configured, so no calendar entities.
+    assert not any(e.domain == "calendar" for e in entries)
+
+    # 2 companions x (6 last_* + weight + due + next + overdue) + 2 instance
+    assert len(entries) == 22
 
 
 async def test_device_model_and_via_device(

@@ -20,6 +20,7 @@ CONF_API_TOKEN: Final = "api_token"
 CONF_SCAN_INTERVAL: Final = "scan_interval"
 CONF_ENABLE_MOOD_SENSOR: Final = "enable_mood_sensor"
 CONF_INCLUDE_ARCHIVED: Final = "include_archived"
+CONF_CALENDAR_FEED_URL: Final = "calendar_feed_url"
 
 DEFAULT_SCAN_INTERVAL: Final = 300
 """Five minutes. The instance-wide pre-auth limit is 30 requests / 60s."""

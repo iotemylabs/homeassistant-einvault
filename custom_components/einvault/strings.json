@@ -43,14 +43,19 @@
         "data": {
           "scan_interval": "Update interval",
           "enable_mood_sensor": "Enable the daily mood sensor",
-          "include_archived": "Include archived companions"
+          "include_archived": "Include archived companions",
+          "calendar_feed_url": "Calendar feed URL"
         },
         "data_description": {
           "scan_interval": "Seconds between polls. The minimum is 60. EinVault allows 30 requests per minute per client IP, shared with every other consumer on that address.",
           "enable_mood_sensor": "Adds a mood sensor per companion. Costs one extra API request per companion on every refresh, so it is off by default.",
-          "include_archived": "Create entities for companions that have been archived in EinVault."
+          "include_archived": "Create entities for companions that have been archived in EinVault.",
+          "calendar_feed_url": "Optional. Paste the personal ICS feed URL from EinVault under Settings, Calendar feed. This adds a calendar per companion with full recurring-reminder support. The feed uses its own token and does not count against the API rate limit. Leave blank to create no calendars."
         }
       }
+    },
+    "error": {
+      "invalid_calendar_feed": "That does not look like an EinVault calendar feed URL. It should end in /api/calendar/<token>/feed.ics"
     }
   },
   "entity": {
@@ -78,6 +83,38 @@
       },
       "api_calls_last_refresh": {
         "name": "API calls last refresh"
+      },
+      "due_reminders": {
+        "name": "Due reminders"
+      },
+      "next_reminder": {
+        "name": "Next reminder"
+      },
+      "today_mood": {
+        "name": "Mood today",
+        "state": {
+          "great": "Great",
+          "good": "Good",
+          "meh": "Meh",
+          "off": "Off",
+          "sick": "Sick"
+        }
+      }
+    },
+    "binary_sensor": {
+      "reminder_overdue": {
+        "name": "Reminder overdue"
+      },
+      "caretaker_on_shift": {
+        "name": "Caretaker on shift"
+      }
+    },
+    "calendar": {
+      "companion": {
+        "name": "Calendar"
+      },
+      "shift_calendar": {
+        "name": "Caretaker shifts"
       }
     }
   }

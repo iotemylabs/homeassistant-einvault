@@ -33,9 +33,11 @@ from .api import (
     EinVaultForbiddenError,
     EinVaultRateLimitError,
     normalize_base_url,
+    parse_calendar_feed_url,
 )
 from .const import (
     CONF_API_TOKEN,
+    CONF_CALENDAR_FEED_URL,
     CONF_ENABLE_MOOD_SENSOR,
     CONF_INCLUDE_ARCHIVED,
     CONF_SCAN_INTERVAL,
@@ -212,8 +214,24 @@ class EinVaultOptionsFlow(OptionsFlow):
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Manage the options."""
+        errors: dict[str, str] = {}
+
         if user_input is not None:
-            return self.async_create_entry(data=user_input)
+            feed_url = (user_input.get(CONF_CALENDAR_FEED_URL) or "").strip()
+            if feed_url:
+                try:
+                    parse_calendar_feed_url(feed_url)
+                except ValueError:
+                    errors["base"] = "invalid_calendar_feed"
+            if not errors:
+                # Normalise an omitted feed URL to absent rather than empty, so
+                # clearing the field genuinely removes the calendar entities.
+                cleaned = {**user_input}
+                if feed_url:
+                    cleaned[CONF_CALENDAR_FEED_URL] = feed_url
+                else:
+                    cleaned.pop(CONF_CALENDAR_FEED_URL, None)
+                return self.async_create_entry(data=cleaned)
 
         options = self.config_entry.options
         schema = vol.Schema(
@@ -238,6 +256,10 @@ class EinVaultOptionsFlow(OptionsFlow):
                     CONF_INCLUDE_ARCHIVED,
                     default=options.get(CONF_INCLUDE_ARCHIVED, DEFAULT_INCLUDE_ARCHIVED),
                 ): BooleanSelector(),
+                vol.Optional(
+                    CONF_CALENDAR_FEED_URL,
+                    description={"suggested_value": options.get(CONF_CALENDAR_FEED_URL, "")},
+                ): TextSelector(TextSelectorConfig(type=TextSelectorType.URL)),
             }
         )
-        return self.async_show_form(step_id="init", data_schema=schema)
+        return self.async_show_form(step_id="init", data_schema=schema, errors=errors)

@@ -1,12 +1,16 @@
 {
   "domain": "einvault",
   "name": "EinVault",
-  "codeowners": ["@iotemylabs"],
+  "codeowners": [
+    "@iotemylabs"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/iotemylabs/homeassistant-einvault",
   "integration_type": "hub",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/iotemylabs/homeassistant-einvault/issues",
-  "requirements": [],
+  "requirements": [
+    "ical==14.0.1"
+  ],
   "version": "0.1.0"
 }

@@ -219,6 +219,58 @@ yields a better message than the server's.
 
 ---
 
+## W-13 — A quick log with no companions is silently invisible to the API
+
+**Impact:** medium, and it costs the user real debugging time — it cost this project some.
+
+`createQuickLog` attaches companions conditionally:
+
+```js
+if (companionIds.length > 0) {
+  tx.insert(schema.quickLogCompanions).values(...)
+}
+```
+
+so a quick log saved without selecting a companion is persisted successfully. But
+`listQuickLogButtons` ends with `.filter((b) => b.companionIds.length > 0)`, so that quick log
+never appears in `GET /api/quick-logs` — and the response is an empty array, indistinguishable
+from "this user has configured no quick logs at all".
+
+The user sees their quick log in Settings, sees an empty list over the API, and has no signal
+explaining the difference. An integration author sees `{"quickLogs": []}` and cannot tell
+whether to show "none configured" or "something is misconfigured".
+
+**Ask:** either require at least one companion when saving a quick log (a validation error at
+creation time is far kinder than silent invisibility later), or surface the quick log in the API
+response with its empty `companionIds` so a client can explain why it is not actionable. Same
+applies to `isEnabled: false` — currently indistinguishable from absent.
+
+**Workaround:** the README tells users a quick log needs at least one companion attached *and*
+must be enabled *and* must belong to the token's own user. The integration logs an informational
+message pointing at Settings → Quick logs when the list is empty.
+
+---
+
+## W-14 — Shifts are creatable only for caretaker users, from one well-hidden form
+
+**Impact:** low-medium. Discoverability, mostly.
+
+`/api/shifts` exists, is documented, and returns `200 {"shifts":[],"hasMore":false}` on most
+instances — because creating a shift requires a user whose role is exactly `caretaker`
+(`addShift` returns `400 userNotCaretaker` otherwise), and the only place to create one is a
+form on **Admin → Users**. There is no shift page anywhere in `src/routes/`, and nothing in the
+UI hints that shifts are a caretaker-only concept.
+
+An admin-only household therefore gets a permanently empty, permanently unexplained endpoint.
+
+**Ask:** document the caretaker prerequisite next to the shift form, and consider surfacing
+shift scheduling somewhere more discoverable than the user-administration page.
+
+**Workaround:** the integration's `caretaker_on_shift` sensor simply reads `off`, and the README
+explains that shifts require a caretaker-role user.
+
+---
+
 ## W-9 — No webhooks or push of any kind
 
 **Impact:** architectural. Polling is the only option, which is what forces every constraint

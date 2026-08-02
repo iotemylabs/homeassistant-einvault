@@ -24,6 +24,31 @@
       },
       "api_calls_last_refresh": {
         "default": "mdi:swap-vertical"
+      },
+      "due_reminders": {
+        "default": "mdi:bell-ring"
+      },
+      "next_reminder": {
+        "default": "mdi:bell-clock"
+      },
+      "today_mood": {
+        "default": "mdi:emoticon-happy-outline"
+      }
+    },
+    "binary_sensor": {
+      "reminder_overdue": {
+        "default": "mdi:bell-alert"
+      },
+      "caretaker_on_shift": {
+        "default": "mdi:account-clock"
+      }
+    },
+    "calendar": {
+      "companion": {
+        "default": "mdi:calendar-heart"
+      },
+      "shift_calendar": {
+        "default": "mdi:calendar-account"
       }
     }
   }

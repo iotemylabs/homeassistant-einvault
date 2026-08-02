@@ -6,9 +6,8 @@
 Home Assistant integration for a self-hosted [EinVault](https://github.com/davefatkin/EinVault)
 instance — companion (pet) health and care tracking.
 
-> **Status: phase 2 of 6.** Client, config flow, coordinator, companion devices, and the
-> `last_*` / weight sensors are in place. Reminder and shift sensors (phase 3), quick-log
-> buttons and actions (phase 4), and the calendar (phase 5) are still to come.
+> **Status: phase 3 of 6, plus the calendar.** Sensors, binary sensors, and ICS-backed
+> calendars are in place. Quick-log buttons and actions (phase 4) are still to come.
 
 ## Entities
 
@@ -18,6 +17,13 @@ One device per companion, plus a service device for the instance itself.
 |---|---|---|
 | `last_walk`, `last_meal`, `last_bathroom`, `last_play`, `last_grooming`, `last_treat` | timestamp | Newest event of that type. Attributes: `subtypes`, `duration_minutes`, `notes`. |
 | `latest_weight` | weight, measurement | Unit from the companion's `weightUnit`, falling back to the unit on the entry itself since the former is nullable. |
+| `due_reminders` | count | Open reminders for that companion. Attribute: how many are overdue. |
+| `next_reminder` | timestamp | Soonest open reminder. Attributes: `title`, `type`, `is_recurring`. |
+| `today_mood` | enum | **Opt-in.** Today's journal mood. Costs one extra API call per companion per refresh. |
+| `reminder_overdue` | binary, problem | Anything past due. Attribute: the offending titles. |
+| `caretaker_on_shift` | binary, occupancy | Instance-scoped. Attribute: caretaker names, resolved from the roster. |
+| `Calendar` | calendar | **Opt-in.** One per companion, from the ICS feed. See below. |
+| `Caretaker shifts` | calendar | **Opt-in.** Instance-scoped shift calendar. |
 | `api_calls_last_refresh` | diagnostic | Disabled by default. Enable it to watch the request budget. |
 
 A companion added in EinVault gets entities on the next hourly refresh, with no reload. One
@@ -105,10 +111,11 @@ directory and restart.
 | Update interval | 300 s | Minimum 60 s. See the call-budget note below. |
 | Daily mood sensor | off | Costs **one extra request per companion per refresh** — `GET /api/journal` reads one companion for one day and has no bulk form. Off by default for that reason. |
 | Include archived companions | off | Archived companions 404 on direct lookup; their entities go unavailable rather than failing the refresh. |
+| Calendar feed URL | empty | Optional. The ICS URL from *Settings → Calendar feed*. Creates calendar entities; see below. Costs nothing against the API budget. |
 
 ### Call budget
 
-Once the coordinator lands in phase 2, a full refresh with *N* companions costs:
+A full refresh with *N* companions costs:
 
 | Calls | Endpoint |
 |---|---|
@@ -136,13 +143,36 @@ a login, or reads the SQLite database, so those features are out of scope. See
 EinVault emits no webhooks, so polling is the only option. That is a deliberate constraint of
 the upstream API, not an oversight here.
 
-### Calendar: use the built-in ICS feed
+### Calendar
 
-EinVault already publishes a personal, revocable ICS feed at
-`/api/calendar/{token}/feed.ics` covering health events, reminders with recurrence, and shifts.
-Home Assistant's built-in [`remote_calendar`](https://www.home-assistant.io/integrations/remote_calendar/)
-consumes it with zero code, and it is the recommended path. A native calendar entity is planned
-as a convenience only (phase 5).
+Calendars are **opt-in**. Paste your personal feed URL into the integration's options:
+
+> EinVault → Settings → Calendar feed → copy the URL ending in
+> `/api/calendar/<token>/feed.ics`
+
+That creates one calendar per companion, plus an instance-level caretaker-shift calendar.
+
+The ICS feed is used rather than the REST API for three concrete reasons:
+
+- **Recurrence actually works.** The feed carries `RRULE`, so a yearly reminder shows every
+  future occurrence. `GET /api/reminders` returns only the current one.
+- **It costs nothing against the rate limit.** The feed route authenticates on the token in its
+  own path instead of going through `requireApiToken`, so it is exempt from the
+  30-requests/60-seconds budget.
+- **One fetch covers everything** — health events, reminders, and shifts, for all companions.
+
+Events are attributed to companions using the feed's `CATEGORIES` property, which EinVault
+emits as `<kind>,<companionName>`. Two companions sharing a name is the one case this cannot
+separate; both calendars would then show both sets of events.
+
+The feed token is **separate from your API token** and is stored in the config entry options,
+redacted from diagnostics, and never logged. If the feed is rejected or malformed, the
+calendars go unavailable and nothing else is affected — in particular it does not trigger a
+reauth prompt, which would ask for the wrong credential.
+
+Home Assistant's built-in
+[`remote_calendar`](https://www.home-assistant.io/integrations/remote_calendar/) consumes the
+same URL with zero configuration here, if you would rather not use these entities.
 
 ---
 
@@ -156,7 +186,10 @@ mypy custom_components/einvault
 ```
 
 The client in `custom_components/einvault/api.py` imports nothing from `homeassistant` and is
-tested in isolation. Test fixtures under `tests/fixtures/` are **captured from a live instance**,
+tested in isolation. The one third-party requirement is
+[`ical`](https://pypi.org/project/ical/) — the same library Home Assistant's own
+`remote_calendar` integration uses — needed only to parse the calendar feed's recurrence rules.
+It is not used anywhere outside `calendar.py`. Test fixtures under `tests/fixtures/` are **captured from a live instance**,
 not hand-written, so they reflect real nullability — `subtypes` arrives as `null` rather than
 `[]`, and an absent journal entry is `{"entry": null}` rather than a 404.
 

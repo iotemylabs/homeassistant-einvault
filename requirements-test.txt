@@ -1,3 +1,5 @@
+# Mirrors manifest.json requirements so tests exercise the real parser.
+ical==14.0.1
 pytest-homeassistant-custom-component==0.13.196
 aioresponses==0.7.7
 syrupy==4.8.0

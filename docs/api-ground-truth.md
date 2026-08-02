@@ -210,7 +210,52 @@ Recommended in the README: point Home Assistant at the **internal** address
 
 ---
 
-## Token scope and role detection
+## Why `/api/shifts` and `/api/quick-logs` can legitimately return empty
+
+Both endpoints return `200` with an empty array in situations that look like a bug but are not.
+Verified against upstream source.
+
+### Shifts require a `caretaker`-role user to exist
+
+A "shift" is a scheduled window (`startAt`/`endAt`) during which a **caretaker** — a pet sitter —
+is on duty. The table is `caretaker_shifts`, keyed on `userId`.
+
+Shifts are created only from **Admin → Users**, via the `addShift` form action
+(`src/routes/(app)/(admin)/admin/users/+page.server.ts`). There is no other page in the entire
+app for creating them; `src/routes/` contains no shift route. The action enforces:
+
+- the caller is `admin`;
+- **the target user's role is exactly `caretaker`** — `user.role !== 'caretaker'` returns
+  `400 userNotCaretaker`;
+- the new window does not overlap an existing shift for that user.
+
+So on an instance whose only user is an admin, `/api/shifts` is *necessarily* empty and no
+amount of UI clicking will change that. A caretaker user must be created first.
+
+Functionally, shifts gate caretaker writes: a caretaker token outside an active shift gets
+`403 noActiveShift`. For a household with no sitters, shifts stay empty forever and the
+`caretaker_on_shift` binary sensor will read `off` permanently — accurate, but uninteresting.
+
+### Quick logs are filtered by three conditions, silently
+
+`listQuickLogButtons` (`src/lib/server/quick-logs.ts`) returns a quick log only if **all** hold:
+
+1. `quickLogs.userId == <token user's id>` — quick logs are per-user, not per-instance;
+2. `quickLogs.isEnabled == true` (defaults to `true` on create);
+3. after mapping, `companionIds.length > 0` — at least one attached companion the token user is
+   allowed to see.
+
+Condition 3 is the trap. `createQuickLog` inserts companion links conditionally:
+
+```js
+if (companionIds.length > 0) {
+  tx.insert(schema.quickLogCompanions).values(...)
+}
+```
+
+so a quick log saved with no companion selected is stored happily and then filtered out of the
+API response forever, with no error and no way to tell it apart from "you have no quick logs".
+See wishlist W-13.
 
 Verified with the live token: **full scope, `admin` role**.
 

@@ -29,23 +29,39 @@ from typing import TYPE_CHECKING
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.util import dt as dt_util
+from ical.calendar import Calendar
+from ical.calendar_stream import IcsCalendarStream
 
 from .api import (
     EinVaultAuthError,
+    EinVaultCalendarFeedClient,
     EinVaultClient,
+    EinVaultConnectionError,
     EinVaultError,
     EinVaultRateLimitError,
 )
 from .const import (
+    CONF_ENABLE_MOOD_SENSOR,
     CONF_INCLUDE_ARCHIVED,
     CONF_SCAN_INTERVAL,
+    DEFAULT_ENABLE_MOOD_SENSOR,
     DEFAULT_INCLUDE_ARCHIVED,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
     LIST_PAGE_SIZE,
     SLOW_REFRESH_INTERVAL,
 )
-from .models import Companion, LogEvent, QuickLog, Reminder, Shift, User, WeightEntry
+from .models import (
+    Companion,
+    JournalEntry,
+    LogEvent,
+    QuickLog,
+    Reminder,
+    Shift,
+    User,
+    WeightEntry,
+)
 
 if TYPE_CHECKING:
     from . import EinVaultConfigEntry
@@ -66,6 +82,7 @@ class EinVaultData:
     companions: dict[str, Companion] = field(default_factory=dict)
     latest_events: dict[str, dict[str, LogEvent]] = field(default_factory=dict)
     latest_weight: dict[str, WeightEntry | None] = field(default_factory=dict)
+    journals: dict[str, JournalEntry | None] = field(default_factory=dict)
     reminders: list[Reminder] = field(default_factory=list)
     shifts: list[Shift] = field(default_factory=list)
     quick_logs: list[QuickLog] = field(default_factory=list)
@@ -105,6 +122,13 @@ class EinVaultDataUpdateCoordinator(DataUpdateCoordinator[EinVaultData]):
 
         # Warn once per rate-limit episode, not once per entity per refresh.
         self._rate_limit_warned = False
+
+    @property
+    def mood_sensor_enabled(self) -> bool:
+        """Whether the opt-in daily mood sensor is turned on."""
+        return bool(
+            self.config_entry.options.get(CONF_ENABLE_MOOD_SENSOR, DEFAULT_ENABLE_MOOD_SENSOR)
+        )
 
     @property
     def include_archived(self) -> bool:
@@ -167,10 +191,13 @@ class EinVaultDataUpdateCoordinator(DataUpdateCoordinator[EinVaultData]):
         previous = self.data
         latest_events: dict[str, dict[str, LogEvent]] = {}
         latest_weight: dict[str, WeightEntry | None] = {}
+        journals: dict[str, JournalEntry | None] = {}
 
         for companion_id in companions:
             latest_events[companion_id] = await self._async_latest_events(companion_id, previous)
             latest_weight[companion_id] = await self._async_latest_weight(companion_id, previous)
+            if self.mood_sensor_enabled:
+                journals[companion_id] = await self._async_journal(companion_id, previous)
 
         self._rate_limit_warned = False
 
@@ -178,11 +205,32 @@ class EinVaultDataUpdateCoordinator(DataUpdateCoordinator[EinVaultData]):
             companions=companions,
             latest_events=latest_events,
             latest_weight=latest_weight,
+            journals=journals,
             reminders=reminders,
             shifts=shifts,
             quick_logs=list(self._quick_logs),
             users=list(self._users),
         )
+
+    async def _async_journal(
+        self, companion_id: str, previous: EinVaultData | None
+    ) -> JournalEntry | None:
+        """Return today's journal entry for one companion.
+
+        Only called when the mood sensor is enabled. ``GET /api/journal`` reads
+        one companion for one day and has no bulk form, so this costs one extra
+        request per companion per refresh — which is exactly why the sensor is
+        opt-in.
+        """
+        try:
+            return await self.client.async_get_journal(companion_id, on_date=dt_util.now().date())
+        except (EinVaultRateLimitError, EinVaultAuthError):
+            raise
+        except EinVaultError as err:
+            _LOGGER.debug("Could not read journal for companion %s: %s", companion_id, err)
+            if previous is not None:
+                return previous.journals.get(companion_id)
+            return None
 
     async def _async_latest_events(
         self, companion_id: str, previous: EinVaultData | None
@@ -267,3 +315,46 @@ class EinVaultDataUpdateCoordinator(DataUpdateCoordinator[EinVaultData]):
             for companion_id, companion in self._companions.items()
             if not companion.is_archived
         }
+
+
+CALENDAR_REFRESH_INTERVAL = timedelta(minutes=15)
+"""The feed carries ``Cache-Control: max-age=300`` and calendar content changes
+slowly. Fifteen minutes is plenty, and costs nothing against the API budget."""
+
+
+class EinVaultCalendarCoordinator(DataUpdateCoordinator[Calendar]):
+    """Fetches and parses the ICS feed once for all calendar entities."""
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        entry: EinVaultConfigEntry,
+        feed_client: EinVaultCalendarFeedClient,
+    ) -> None:
+        """Initialise the calendar coordinator."""
+        self._feed_client = feed_client
+        super().__init__(
+            hass,
+            _LOGGER,
+            name=f"{DOMAIN}_calendar",
+            config_entry=entry,
+            update_interval=CALENDAR_REFRESH_INTERVAL,
+        )
+
+    async def _async_update_data(self) -> Calendar:
+        """Fetch the feed and parse it off the event loop."""
+        try:
+            ics = await self._feed_client.async_fetch_ics()
+        except EinVaultAuthError as err:
+            # The feed token is separate from the API token, so a bad one must
+            # not trigger the API reauth flow — it would ask for the wrong
+            # credential. Surface it as a failure the user can read instead.
+            raise UpdateFailed(str(err)) from err
+        except EinVaultConnectionError as err:
+            raise UpdateFailed(str(err)) from err
+
+        try:
+            # Parsing is CPU-bound and unbounded in size; keep it off the loop.
+            return await self.hass.async_add_executor_job(IcsCalendarStream.calendar_from_ics, ics)
+        except ValueError as err:
+            raise UpdateFailed(f"Could not parse the EinVault calendar feed: {err}") from err

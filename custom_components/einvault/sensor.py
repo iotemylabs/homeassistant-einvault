@@ -15,11 +15,13 @@ from homeassistant.components.sensor import (
 from homeassistant.const import EntityCategory, UnitOfMass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.util import dt as dt_util
 
 from . import EinVaultConfigEntry
+from .const import JOURNAL_MOODS
 from .coordinator import EinVaultDataUpdateCoordinator
 from .entity import EinVaultCompanionEntity, EinVaultInstanceEntity
-from .models import Companion, LogEvent
+from .models import Companion, LogEvent, Reminder
 
 # `other` is deliberately absent: a generic "something happened" timestamp is
 # not a useful sensor, and it would collide with the more specific ones.
@@ -89,6 +91,10 @@ async def async_setup_entry(
                 for description in LAST_EVENT_DESCRIPTIONS
             )
             entities.append(EinVaultWeightSensor(coordinator, companion))
+            entities.append(EinVaultDueRemindersSensor(coordinator, companion))
+            entities.append(EinVaultNextReminderSensor(coordinator, companion))
+            if coordinator.mood_sensor_enabled:
+                entities.append(EinVaultMoodSensor(coordinator, companion))
         async_add_entities(entities)
 
     async_add_entities([EinVaultApiCallsSensor(coordinator)])
@@ -208,3 +214,115 @@ class EinVaultApiCallsSensor(EinVaultInstanceEntity, SensorEntity):
     def native_value(self) -> int:
         """Return the call count from the most recent refresh."""
         return self.coordinator.data.calls_last_refresh
+
+
+class EinVaultDueRemindersSensor(EinVaultCompanionEntity, SensorEntity):
+    """How many of a companion's reminders are still outstanding."""
+
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "reminders"
+
+    def __init__(self, coordinator: EinVaultDataUpdateCoordinator, companion: Companion) -> None:
+        """Initialise the sensor."""
+        super().__init__(coordinator, companion, "due_reminders")
+
+    def _open_reminders(self) -> list[Reminder]:
+        """Outstanding reminders for this companion."""
+        return [
+            reminder
+            for reminder in self.coordinator.data.reminders
+            if reminder.companion_id == self._companion_id and reminder.is_open
+        ]
+
+    @property
+    def native_value(self) -> int:
+        """Return the count of open reminders."""
+        return len(self._open_reminders())
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return how many of those are already past due."""
+        now = dt_util.utcnow()
+        return {
+            "overdue": sum(r.is_overdue(now) for r in self._open_reminders()),
+        }
+
+
+class EinVaultNextReminderSensor(EinVaultCompanionEntity, SensorEntity):
+    """When a companion's soonest outstanding reminder falls due."""
+
+    _attr_device_class = SensorDeviceClass.TIMESTAMP
+
+    def __init__(self, coordinator: EinVaultDataUpdateCoordinator, companion: Companion) -> None:
+        """Initialise the sensor."""
+        super().__init__(coordinator, companion, "next_reminder")
+
+    def _next(self) -> Reminder | None:
+        """Return the soonest open reminder that has a due date."""
+        candidates = [
+            reminder
+            for reminder in self.coordinator.data.reminders
+            if reminder.companion_id == self._companion_id
+            and reminder.is_open
+            and reminder.due_at is not None
+        ]
+        if not candidates:
+            return None
+        return min(candidates, key=lambda r: r.due_at)  # type: ignore[arg-type,return-value]
+
+    @property
+    def native_value(self) -> datetime | None:
+        """Return the soonest due date."""
+        reminder = self._next()
+        return reminder.due_at if reminder else None
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Return what the reminder actually is."""
+        reminder = self._next()
+        if reminder is None:
+            return None
+        return {
+            "title": reminder.title,
+            "type": reminder.type,
+            "description": reminder.description,
+            "is_recurring": reminder.is_recurring,
+            "reminder_id": reminder.id,
+        }
+
+
+class EinVaultMoodSensor(EinVaultCompanionEntity, SensorEntity):
+    """Today's journal mood for a companion.
+
+    Opt-in: it costs one extra API request per companion per refresh, because
+    ``GET /api/journal`` reads a single companion for a single day and has no
+    bulk form.
+    """
+
+    _attr_device_class = SensorDeviceClass.ENUM
+    # RUF012 wants ClassVar, but SensorEntity declares _attr_options as an
+    # instance variable, so annotating it that way fails mypy instead.
+    _attr_options = list(JOURNAL_MOODS)  # noqa: RUF012
+
+    def __init__(self, coordinator: EinVaultDataUpdateCoordinator, companion: Companion) -> None:
+        """Initialise the sensor."""
+        super().__init__(coordinator, companion, "today_mood")
+
+    @property
+    def native_value(self) -> str | None:
+        """Return today's mood, if one was recorded."""
+        entry = self.coordinator.data.journals.get(self._companion_id)
+        if entry is None or entry.mood not in JOURNAL_MOODS:
+            return None
+        return entry.mood
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Return whether a journal body exists, without copying it wholesale."""
+        entry = self.coordinator.data.journals.get(self._companion_id)
+        if entry is None:
+            return None
+        return {
+            "has_body": bool(entry.body),
+            "updated_at": entry.updated_at.isoformat() if entry.updated_at else None,
+        }

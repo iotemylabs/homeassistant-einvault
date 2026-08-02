@@ -22,6 +22,7 @@ import asyncio
 from datetime import date, datetime
 from http import HTTPStatus
 import logging
+import re
 from types import MappingProxyType
 from typing import Any, Final, Literal
 from urllib.parse import urlsplit, urlunsplit
@@ -788,3 +789,98 @@ class EinVaultClient:
             next_reminder_id=payload.get("nextReminderId"),
             raw=MappingProxyType(payload).copy(),
         )
+
+
+CALENDAR_FEED_PATH_RE = re.compile(r"^/api/calendar/(?P<token>[^/]+)/feed\.ics$")
+
+
+def parse_calendar_feed_url(url: str) -> tuple[str, str]:
+    """Split a calendar feed URL into its base URL and feed token.
+
+    The feed token is a path segment rather than a header, which is EinVault's
+    design and not something a client can change. It is therefore treated as a
+    credential everywhere it is handled: never logged, and redacted from
+    diagnostics.
+
+    Raises:
+        ValueError: if the URL is not a calendar feed URL.
+    """
+    parts = urlsplit(url.strip())
+    if parts.scheme not in ("http", "https") or not parts.hostname:
+        raise ValueError("Calendar feed URL must be a full http(s) URL")
+
+    match = CALENDAR_FEED_PATH_RE.match(parts.path)
+    if not match:
+        raise ValueError(
+            "Expected a URL ending in /api/calendar/<token>/feed.ics — copy it from "
+            "EinVault under Settings, Calendar feed"
+        )
+
+    base = normalize_base_url(urlunsplit((parts.scheme, parts.netloc, "", "", "")))
+    return base, match.group("token")
+
+
+class EinVaultCalendarFeedClient:
+    """Fetches the personal ICS calendar feed.
+
+    Deliberately separate from :class:`EinVaultClient`. The feed route does not
+    go through ``requireApiToken`` — it authenticates on the token in its path —
+    so it is exempt from the 30-request/60-second budget, and counting it there
+    would misreport the figure the diagnostic sensor exists to show.
+    """
+
+    def __init__(
+        self,
+        base_url: str,
+        feed_token: str,
+        session: ClientSession,
+        *,
+        timeout: int = DEFAULT_TIMEOUT,
+    ) -> None:
+        """Create a feed client."""
+        self._base_url = normalize_base_url(base_url)
+        self._feed_token = feed_token
+        self._session = session
+        self._timeout = ClientTimeout(total=timeout)
+
+    @property
+    def feed_url(self) -> str:
+        """The full feed URL. Contains a credential — never log this."""
+        return f"{self._base_url}/api/calendar/{self._feed_token}/feed.ics"
+
+    async def async_fetch_ics(
+        self, *, companion_id: str | None = None, kinds: list[str] | None = None
+    ) -> str:
+        """Fetch the feed, optionally filtered server-side.
+
+        Raises:
+            EinVaultAuthError: the feed token is unknown or the feed is
+                disabled (``CALENDAR_FEED_ENABLED=false``). Both answer 404
+                with a plain-text body, and neither is retryable.
+            EinVaultConnectionError: the instance was unreachable.
+        """
+        params: dict[str, str] = {}
+        if companion_id:
+            params["companion"] = companion_id
+        if kinds:
+            params["type"] = ",".join(kinds)
+
+        try:
+            async with self._session.get(
+                self.feed_url, params=params or None, timeout=self._timeout
+            ) as response:
+                if response.status == HTTPStatus.NOT_FOUND:
+                    raise EinVaultAuthError(
+                        "The EinVault calendar feed rejected this token. It may have "
+                        "been regenerated, or the feed may be disabled on the server."
+                    )
+                if response.status >= HTTPStatus.BAD_REQUEST:
+                    raise EinVaultConnectionError(f"Calendar feed returned HTTP {response.status}")
+                return await response.text()
+        except TimeoutError as err:
+            raise EinVaultConnectionError("Timed out fetching the calendar feed") from err
+        except ClientError as err:
+            # The URL carries the feed token, so it must not reach the message.
+            raise EinVaultConnectionError(
+                f"Cannot reach the calendar feed: {err.__class__.__name__}"
+            ) from err

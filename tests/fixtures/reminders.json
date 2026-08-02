@@ -1,0 +1,41 @@
+{
+  "reminders": [
+    {
+      "id": "2qjxjgx7tzaldnw",
+      "companionId": "gnc6gumwexrp3cs",
+      "title": "Change Flea Collar",
+      "description": "Approx date from last collar change.",
+      "type": "medication",
+      "dueAt": "2027-01-25T13:00:00.000Z",
+      "isRecurring": true,
+      "completedAt": null,
+      "outcome": null,
+      "seriesId": "2qjxjgx7tzaldnw"
+    },
+    {
+      "id": "wm6nqqbobtbqyus",
+      "companionId": "ztmzsi6kq5lc2wl",
+      "title": "File Property Taxes for Dog",
+      "description": "Need to file.",
+      "type": "other",
+      "dueAt": "2026-09-25T12:00:00.000Z",
+      "isRecurring": true,
+      "completedAt": null,
+      "outcome": null,
+      "seriesId": "wm6nqqbobtbqyus"
+    },
+    {
+      "id": "rpfrzohwk2vuihd",
+      "companionId": "gnc6gumwexrp3cs",
+      "title": "Get Blood Work",
+      "description": "Needs full workup.",
+      "type": "vet",
+      "dueAt": "2026-08-01T18:00:00.000Z",
+      "isRecurring": false,
+      "completedAt": null,
+      "outcome": null,
+      "seriesId": null
+    }
+  ],
+  "hasMore": false
+}
