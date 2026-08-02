@@ -22,11 +22,13 @@ from .api import (
 )
 from .const import CONF_API_TOKEN, CONF_CALENDAR_FEED_URL, CONF_URL
 from .coordinator import EinVaultCalendarCoordinator, EinVaultDataUpdateCoordinator
+from .services import async_setup_services
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [
     Platform.BINARY_SENSOR,
+    Platform.BUTTON,
     Platform.CALENDAR,
     Platform.SENSOR,
 ]
@@ -76,6 +78,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: EinVaultConfigEntry) -> 
         coordinator=coordinator,
         calendar_coordinator=calendar_coordinator,
     )
+
+    # Registered once for the domain, not per entry; actions resolve their
+    # own config entry from the device they target.
+    async_setup_services(hass)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))

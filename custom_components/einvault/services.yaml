@@ -1,0 +1,178 @@
+log_activity:
+  target:
+    device:
+      integration: einvault
+  fields:
+    type:
+      required: true
+      example: walk
+      selector:
+        select:
+          translation_key: daily_event_type
+          options:
+            - walk
+            - meal
+            - bathroom
+            - treat
+            - play
+            - grooming
+            - other
+    subtypes:
+      example: '["leash"]'
+      selector:
+        select:
+          multiple: true
+          custom_value: false
+          translation_key: subtype
+          options:
+            - pee
+            - poop
+            - leash
+            - offleash
+            - hike
+            - breakfast
+            - lunch
+            - dinner
+            - snack
+            - fetch
+            - tug
+            - puzzle
+            - social
+            - bath
+            - brush
+            - trim
+            - nails
+            - teeth
+            - ears
+            - chew
+            - dental
+            - training
+    duration_minutes:
+      example: 30
+      selector:
+        number:
+          min: 1
+          max: 480
+          unit_of_measurement: min
+          mode: box
+    notes:
+      example: Long walk in the park
+      selector:
+        text:
+          multiline: true
+    logged_at:
+      selector:
+        datetime:
+
+log_weight:
+  target:
+    device:
+      integration: einvault
+  fields:
+    weight:
+      required: true
+      example: 9.2
+      selector:
+        number:
+          min: 0.1
+          max: 200
+          step: 0.1
+          mode: box
+    unit:
+      required: true
+      example: lbs
+      selector:
+        select:
+          translation_key: weight_unit
+          options:
+            - kg
+            - lbs
+    notes:
+      selector:
+        text:
+          multiline: true
+    recorded_at:
+      selector:
+        datetime:
+
+log_health_event:
+  target:
+    device:
+      integration: einvault
+  fields:
+    type:
+      required: true
+      example: vet_visit
+      selector:
+        select:
+          translation_key: health_event_type
+          options:
+            - vet_visit
+            - vaccination
+            - medication
+            - procedure
+            - other
+    title:
+      required: true
+      example: Annual checkup
+      selector:
+        text:
+    notes:
+      selector:
+        text:
+          multiline: true
+    occurred_at:
+      selector:
+        datetime:
+    vet_name:
+      selector:
+        text:
+    vet_clinic:
+      selector:
+        text:
+
+set_journal:
+  target:
+    device:
+      integration: einvault
+  fields:
+    date:
+      selector:
+        date:
+    body:
+      selector:
+        text:
+          multiline: true
+    mood:
+      example: good
+      selector:
+        select:
+          translation_key: journal_mood
+          options:
+            - great
+            - good
+            - meh
+            - "off"
+            - sick
+
+complete_reminder:
+  target:
+    device:
+      integration: einvault
+  fields:
+    reminder_id:
+      required: true
+      example: rpfrzohwk2vuihd
+      selector:
+        text:
+
+skip_reminder:
+  target:
+    device:
+      integration: einvault
+  fields:
+    reminder_id:
+      required: true
+      example: 2qjxjgx7tzaldnw
+      selector:
+        text:

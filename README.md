@@ -6,8 +6,8 @@
 Home Assistant integration for a self-hosted [EinVault](https://github.com/davefatkin/EinVault)
 instance — companion (pet) health and care tracking.
 
-> **Status: phase 3 of 6, plus the calendar.** Sensors, binary sensors, and ICS-backed
-> calendars are in place. Quick-log buttons and actions (phase 4) are still to come.
+> **Status: phase 4 of 6.** Sensors, binary sensors, calendars, quick-log buttons, and all six
+> actions are in place. Remaining: diagnostics polish and `quality_scale.yaml` (phases 5-6).
 
 ## Entities
 
@@ -24,6 +24,7 @@ One device per companion, plus a service device for the instance itself.
 | `caretaker_on_shift` | binary, occupancy | Instance-scoped. Attribute: caretaker names, resolved from the roster. |
 | `Calendar` | calendar | **Opt-in.** One per companion, from the ICS feed. See below. |
 | `Caretaker shifts` | calendar | **Opt-in.** Instance-scoped shift calendar. |
+| Quick-log buttons | button | One per quick log. Attached to the companion's device when it targets exactly one, otherwise to the service device. |
 | `api_calls_last_refresh` | diagnostic | Disabled by default. Enable it to watch the request budget. |
 
 A companion added in EinVault gets entities on the next hourly refresh, with no reload. One
@@ -130,6 +131,48 @@ With two companions that is **6 calls per refresh**, or 8 with the mood sensor o
 default 5-minute interval that is well inside the 30/minute allowance.
 
 A diagnostic sensor exposes the observed per-refresh call count so you can verify this.
+
+## Actions
+
+| Action | Purpose |
+|---|---|
+| `einvault.log_activity` | Record a walk, meal, bathroom, treat, play, grooming, or other event |
+| `einvault.log_weight` | Record a weight measurement |
+| `einvault.log_health_event` | Record a vet visit, vaccination, medication, or procedure |
+| `einvault.set_journal` | Create or update a day's journal entry |
+| `einvault.complete_reminder` | Mark a reminder done (recurring ones spawn the next occurrence) |
+| `einvault.skip_reminder` | Skip one occurrence of a recurring reminder |
+
+All of them target a **companion device** and send an `Idempotency-Key`, so a retried call
+replays rather than duplicating. Each refreshes the coordinator on success, so sensors update
+without waiting for the next poll.
+
+`log_activity` validates subtypes **before** sending. The server would answer a bare
+`400 invalidSubtype`; a local check can say which value was wrong and what was allowed. Pairing
+`leash` with `meal` fails immediately, with no HTTP request made at all.
+
+Errors map to actionable messages rather than generic failures — `noActiveShift` explains that
+a caretaker can only log during an assigned shift, `notRecurring` tells you to complete the
+reminder instead of skipping it, and so on.
+
+### Quick-log buttons
+
+One button per quick log returned by `GET /api/quick-logs`, pressed with an **empty body** so
+all configuration stays in EinVault. A press generates a fresh idempotency key; a network
+failure retries **once with the same key**, so a lost response replays instead of creating a
+duplicate entry.
+
+If no buttons appear, the API is returning an empty list. A quick log is only returned when
+**all three** hold:
+
+1. it belongs to the same user whose API token you configured;
+2. it is **enabled**;
+3. it has **at least one companion attached**.
+
+EinVault's *Settings → Quick logs* page lists quick logs matching only condition 1, so a quick
+log can be visible there and still be invisible to the API. Its dashboard and companion pages
+use the same query as the API, so those are the reliable place to check. Tracked upstream as
+[W-13](docs/upstream-wishlist.md).
 
 ---
 

@@ -117,5 +117,236 @@
         "name": "Caretaker shifts"
       }
     }
+  },
+  "services": {
+    "log_activity": {
+      "name": "Log activity",
+      "description": "Records a daily event for one or more companions.",
+      "fields": {
+        "type": {
+          "name": "Type",
+          "description": "The kind of activity."
+        },
+        "subtypes": {
+          "name": "Subtypes",
+          "description": "Optional detail. Must belong to the chosen type — for example, only 'pee' and 'poop' are valid for a bathroom event."
+        },
+        "duration_minutes": {
+          "name": "Duration",
+          "description": "How long it lasted, 1 to 480 minutes. Ignored for types that have no duration."
+        },
+        "notes": {
+          "name": "Notes",
+          "description": "Free text, up to 5000 characters."
+        },
+        "logged_at": {
+          "name": "Logged at",
+          "description": "When it happened. Defaults to now; must be within the last five years and no more than a day ahead."
+        }
+      }
+    },
+    "log_weight": {
+      "name": "Log weight",
+      "description": "Records a weight measurement for one or more companions.",
+      "fields": {
+        "weight": {
+          "name": "Weight",
+          "description": "The measured weight."
+        },
+        "unit": {
+          "name": "Unit",
+          "description": "Kilograms or pounds."
+        },
+        "notes": {
+          "name": "Notes",
+          "description": "Free text, up to 5000 characters."
+        },
+        "recorded_at": {
+          "name": "Recorded at",
+          "description": "When it was measured. Defaults to now."
+        }
+      }
+    },
+    "log_health_event": {
+      "name": "Log health event",
+      "description": "Records a vet visit, vaccination, medication, or procedure.",
+      "fields": {
+        "type": {
+          "name": "Type",
+          "description": "The kind of health event."
+        },
+        "title": {
+          "name": "Title",
+          "description": "Short summary, required."
+        },
+        "notes": {
+          "name": "Notes",
+          "description": "Free text, up to 5000 characters."
+        },
+        "occurred_at": {
+          "name": "Occurred at",
+          "description": "When it happened. Defaults to now."
+        },
+        "vet_name": {
+          "name": "Vet name",
+          "description": "Attending veterinarian."
+        },
+        "vet_clinic": {
+          "name": "Vet clinic",
+          "description": "Clinic or practice name."
+        }
+      }
+    },
+    "set_journal": {
+      "name": "Set journal entry",
+      "description": "Creates or updates a companion's journal entry for a day. Fields you leave empty keep whatever is already stored.",
+      "fields": {
+        "date": {
+          "name": "Date",
+          "description": "Which day's entry. Defaults to today."
+        },
+        "body": {
+          "name": "Body",
+          "description": "Journal text. Leave empty to keep the existing text."
+        },
+        "mood": {
+          "name": "Mood",
+          "description": "How the day went. Leave empty to keep the existing mood."
+        }
+      }
+    },
+    "complete_reminder": {
+      "name": "Complete reminder",
+      "description": "Marks a reminder done. A recurring reminder spawns its next occurrence.",
+      "fields": {
+        "reminder_id": {
+          "name": "Reminder ID",
+          "description": "The reminder's id, shown in the next reminder sensor's attributes."
+        }
+      }
+    },
+    "skip_reminder": {
+      "name": "Skip reminder",
+      "description": "Skips one occurrence of a recurring reminder. One-off reminders cannot be skipped.",
+      "fields": {
+        "reminder_id": {
+          "name": "Reminder ID",
+          "description": "The reminder's id, shown in the next reminder sensor's attributes."
+        }
+      }
+    }
+  },
+  "exceptions": {
+    "no_active_shift": {
+      "message": "This token belongs to a caretaker who is not currently on shift, so EinVault refused the write. Caretakers can only log during an assigned shift."
+    },
+    "not_assigned": {
+      "message": "This token's user is not assigned to that companion, so EinVault refused the write."
+    },
+    "already_completed": {
+      "message": "That reminder has already been completed."
+    },
+    "not_recurring": {
+      "message": "Only recurring reminders can be skipped. Complete the reminder instead."
+    },
+    "reminder_not_found": {
+      "message": "No such reminder, or this token cannot reach the companion it belongs to."
+    },
+    "invalid_subtypes": {
+      "message": "{error}"
+    },
+    "device_not_found": {
+      "message": "No device with id {device_id}."
+    },
+    "not_a_companion": {
+      "message": "{device} is not an EinVault companion device."
+    },
+    "entry_not_loaded": {
+      "message": "The EinVault integration for {device} is not loaded."
+    },
+    "no_target": {
+      "message": "Choose at least one EinVault companion device."
+    },
+    "invalid_token": {
+      "message": "The EinVault API token was rejected. It may have been rotated or revoked."
+    },
+    "rate_limited": {
+      "message": "EinVault is rate limiting requests. Wait a minute and try again."
+    },
+    "cannot_connect": {
+      "message": "Could not reach EinVault: {error}"
+    },
+    "api_error": {
+      "message": "EinVault rejected the request ({code}): {message}"
+    },
+    "quick_log_failed": {
+      "message": "The quick log could not be run: {error}"
+    },
+    "quick_log_not_found": {
+      "message": "That quick log no longer exists, or this token cannot reach it."
+    }
+  },
+  "selector": {
+    "daily_event_type": {
+      "options": {
+        "walk": "Walk",
+        "meal": "Meal",
+        "bathroom": "Bathroom",
+        "treat": "Treat",
+        "play": "Play",
+        "grooming": "Grooming",
+        "other": "Other"
+      }
+    },
+    "health_event_type": {
+      "options": {
+        "vet_visit": "Vet visit",
+        "vaccination": "Vaccination",
+        "medication": "Medication",
+        "procedure": "Procedure",
+        "other": "Other"
+      }
+    },
+    "weight_unit": {
+      "options": {
+        "kg": "Kilograms",
+        "lbs": "Pounds"
+      }
+    },
+    "journal_mood": {
+      "options": {
+        "great": "Great",
+        "good": "Good",
+        "meh": "Meh",
+        "off": "Off",
+        "sick": "Sick"
+      }
+    },
+    "subtype": {
+      "options": {
+        "pee": "Pee",
+        "poop": "Poop",
+        "leash": "Leash",
+        "offleash": "Offleash",
+        "hike": "Hike",
+        "breakfast": "Breakfast",
+        "lunch": "Lunch",
+        "dinner": "Dinner",
+        "snack": "Snack",
+        "fetch": "Fetch",
+        "tug": "Tug",
+        "puzzle": "Puzzle",
+        "social": "Social",
+        "bath": "Bath",
+        "brush": "Brush",
+        "trim": "Trim",
+        "nails": "Nails",
+        "teeth": "Teeth",
+        "ears": "Ears",
+        "chew": "Chew",
+        "dental": "Dental",
+        "training": "Training"
+      }
+    }
   }
 }
