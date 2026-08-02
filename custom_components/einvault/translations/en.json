@@ -55,7 +55,7 @@
       }
     },
     "error": {
-      "invalid_calendar_feed": "That does not look like an EinVault calendar feed URL. It should end in /api/calendar/<token>/feed.ics"
+      "invalid_calendar_feed": "That does not look like an EinVault calendar feed URL. It should end in /api/calendar/YOUR-TOKEN/feed.ics — copy it from EinVault under Settings, Calendar feed."
     }
   },
   "entity": {
