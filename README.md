@@ -6,8 +6,10 @@
 Home Assistant integration for a self-hosted [EinVault](https://github.com/davefatkin/EinVault)
 instance — companion (pet) health and care tracking.
 
-> **Status: phase 4 of 6.** Sensors, binary sensors, calendars, quick-log buttons, and all six
-> actions are in place. Remaining: diagnostics polish and `quality_scale.yaml` (phases 5-6).
+> **Status: phase 5 of 6.** All entities, actions, calendars, and diagnostics are in place.
+> Remaining: snapshot tests and final hardening (phase 6). See
+> [docs/release-checklist.md](docs/release-checklist.md) for the pre-release steps that live
+> outside this repository.
 
 ## Entities
 
@@ -95,6 +97,16 @@ reauth prompt; paste the new token there.
 
 Copy `custom_components/einvault` into your Home Assistant `config/custom_components/`
 directory and restart.
+
+### Removal
+
+Settings → Devices & Services → **EinVault** → ⋮ → **Delete**. That removes the config entry,
+its devices, and its entities. If you installed through HACS, uninstall it there afterwards; for
+a manual install, delete `config/custom_components/einvault` and restart.
+
+Nothing is stored outside the config entry, and no data is written to your EinVault instance on
+removal. The API token stays valid until you revoke it in EinVault under *Settings → API
+tokens*.
 
 ---
 
@@ -236,6 +248,16 @@ It is not used anywhere outside `calendar.py`. Test fixtures under `tests/fixtur
 not hand-written, so they reflect real nullability — `subtypes` arrives as `null` rather than
 `[]`, and an absent journal entry is `{"entry": null}` rather than a 404.
 
+### Diagnostics
+
+Settings → Devices & Services → EinVault → ⋮ → **Download diagnostics**.
+
+Both credentials are redacted, along with every field that identifies a person or a place:
+microchip number, vet name/phone/clinic, emergency contact name and phone, notes for the sitter,
+the companion's bio and schedules, and the user roster's names. The call-budget counters,
+reminder and event data, and coordinator state are kept, since that is what makes a diagnostics
+download worth attaching to a bug report.
+
 ### Documentation
 
 | File | Contents |
@@ -243,6 +265,8 @@ not hand-written, so they reflect real nullability — `subtypes` arrives as `nu
 | [`docs/openapi-reference.json`](docs/openapi-reference.json) | The authoritative spec, fetched from a live instance |
 | [`docs/api-ground-truth.md`](docs/api-ground-truth.md) | Verified behaviour, error catalogue, proxy analysis |
 | [`docs/upstream-wishlist.md`](docs/upstream-wishlist.md) | Every workaround, written up for upstream |
+| [`docs/release-checklist.md`](docs/release-checklist.md) | Steps that must happen outside this repo before release |
+| [`custom_components/einvault/quality_scale.yaml`](custom_components/einvault/quality_scale.yaml) | Honest self-assessment against Home Assistant's quality scale |
 
 ### Known follow-up for Home Assistant Core
 

@@ -34,36 +34,35 @@ def load_fixture_json(name: str) -> Any:
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    """Keep asyncio's self-pipe working under pytest-socket on Windows.
-
-    ``pytest-homeassistant-custom-component`` calls
-    ``pytest_socket.disable_socket(allow_unix_socket=True)``, which blocks
-    creation of every AF_INET socket. On Linux that is fine —
-    ``socket.socketpair()`` uses AF_UNIX, so asyncio can still build the event
-    loop's self-pipe. On Windows there is no AF_UNIX, ``socketpair()`` is
-    emulated over AF_INET, and every async test dies during event-loop setup
-    before a single fixture of ours runs.
-
-    Neutralising the call is scoped to Windows on purpose: CI runs Linux,
-    where socket blocking still catches an accidental real network call.
-    """
-    if sys.platform != "win32":
-        return
-
-    import pytest_socket
-
-    pytest_socket.disable_socket = lambda **kwargs: None  # type: ignore[assignment]
-
-    # Home Assistant hardcodes aiohttp's AsyncResolver when building its
-    # shared client session. That resolver is backed by aiodns, which refuses
-    # to start on Windows' default ProactorEventLoop and leaves a pycares
-    # shutdown thread behind that trips HA's own lingering-thread check.
+    """Make the test environment behave the same on Linux CI and Windows."""
+    # Home Assistant hardcodes aiohttp's AsyncResolver when building its shared
+    # client session. That resolver is backed by aiodns, which spawns a pycares
+    # "_run_safe_shutdown_loop" thread that outlives the test and trips Home
+    # Assistant's own lingering-thread assertion in verify_cleanup. That thread
+    # is not platform-specific, so this patch must not be either.
+    #
     # Every request in these tests is intercepted by aioresponses, so DNS is
     # never exercised and a threaded resolver is a faithful stand-in.
     from aiohttp.resolver import ThreadedResolver
     from homeassistant.helpers import aiohttp_client
 
     aiohttp_client.AsyncResolver = ThreadedResolver  # type: ignore[misc]
+
+    if sys.platform != "win32":
+        return
+
+    # Windows only: pytest-homeassistant-custom-component calls
+    # pytest_socket.disable_socket(allow_unix_socket=True), which blocks
+    # creation of every AF_INET socket. On Linux that is harmless because
+    # socket.socketpair() uses AF_UNIX, so asyncio can still build the event
+    # loop's self-pipe. Windows has no AF_UNIX, socketpair() is emulated over
+    # AF_INET, and every async test dies during event-loop setup.
+    #
+    # Left Windows-scoped on purpose: CI runs Linux, where socket blocking
+    # still catches an accidental real network call.
+    import pytest_socket
+
+    pytest_socket.disable_socket = lambda **kwargs: None  # type: ignore[assignment]
 
 
 @pytest.fixture(autouse=True)

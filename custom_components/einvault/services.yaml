@@ -1,8 +1,11 @@
 log_activity:
-  target:
-    device:
-      integration: einvault
   fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: einvault
+          multiple: true
     type:
       required: true
       example: walk
@@ -65,10 +68,13 @@ log_activity:
         datetime:
 
 log_weight:
-  target:
-    device:
-      integration: einvault
   fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: einvault
+          multiple: true
     weight:
       required: true
       example: 9.2
@@ -96,10 +102,13 @@ log_weight:
         datetime:
 
 log_health_event:
-  target:
-    device:
-      integration: einvault
   fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: einvault
+          multiple: true
     type:
       required: true
       example: vet_visit
@@ -132,10 +141,13 @@ log_health_event:
         text:
 
 set_journal:
-  target:
-    device:
-      integration: einvault
   fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: einvault
+          multiple: true
     date:
       selector:
         date:
@@ -156,10 +168,13 @@ set_journal:
             - sick
 
 complete_reminder:
-  target:
-    device:
-      integration: einvault
   fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: einvault
+          multiple: true
     reminder_id:
       required: true
       example: rpfrzohwk2vuihd
@@ -167,10 +182,13 @@ complete_reminder:
         text:
 
 skip_reminder:
-  target:
-    device:
-      integration: einvault
   fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: einvault
+          multiple: true
     reminder_id:
       required: true
       example: 2qjxjgx7tzaldnw

@@ -123,6 +123,10 @@
       "name": "Log activity",
       "description": "Records a daily event for one or more companions.",
       "fields": {
+        "device_id": {
+          "name": "Companion",
+          "description": "The companion device or devices to act on."
+        },
         "type": {
           "name": "Type",
           "description": "The kind of activity."
@@ -149,6 +153,10 @@
       "name": "Log weight",
       "description": "Records a weight measurement for one or more companions.",
       "fields": {
+        "device_id": {
+          "name": "Companion",
+          "description": "The companion device or devices to act on."
+        },
         "weight": {
           "name": "Weight",
           "description": "The measured weight."
@@ -171,6 +179,10 @@
       "name": "Log health event",
       "description": "Records a vet visit, vaccination, medication, or procedure.",
       "fields": {
+        "device_id": {
+          "name": "Companion",
+          "description": "The companion device or devices to act on."
+        },
         "type": {
           "name": "Type",
           "description": "The kind of health event."
@@ -201,6 +213,10 @@
       "name": "Set journal entry",
       "description": "Creates or updates a companion's journal entry for a day. Fields you leave empty keep whatever is already stored.",
       "fields": {
+        "device_id": {
+          "name": "Companion",
+          "description": "The companion device or devices to act on."
+        },
         "date": {
           "name": "Date",
           "description": "Which day's entry. Defaults to today."
@@ -219,6 +235,10 @@
       "name": "Complete reminder",
       "description": "Marks a reminder done. A recurring reminder spawns its next occurrence.",
       "fields": {
+        "device_id": {
+          "name": "Companion",
+          "description": "The companion device or devices to act on."
+        },
         "reminder_id": {
           "name": "Reminder ID",
           "description": "The reminder's id, shown in the next reminder sensor's attributes."
@@ -229,6 +249,10 @@
       "name": "Skip reminder",
       "description": "Skips one occurrence of a recurring reminder. One-off reminders cannot be skipped.",
       "fields": {
+        "device_id": {
+          "name": "Companion",
+          "description": "The companion device or devices to act on."
+        },
         "reminder_id": {
           "name": "Reminder ID",
           "description": "The reminder's id, shown in the next reminder sensor's attributes."

@@ -1,0 +1,223 @@
+# Integration Quality Scale, self-assessed.
+#
+# hassfest skips this file for custom integrations, so nothing here is
+# enforced — it is recorded honestly to be useful if this integration is ever
+# proposed for Home Assistant Core, and to make the remaining gaps explicit.
+#
+# status: done | todo | exempt
+
+rules:
+  # --- Bronze -------------------------------------------------------------
+  action-setup:
+    status: done
+    comment: |
+      Actions are registered once for the domain in async_setup_entry and
+      guarded with hass.services.has_service, and resolve their config entry
+      from the targeted device rather than capturing one.
+  appropriate-polling:
+    status: done
+    comment: |
+      Five-minute default with a 60-second floor. The server allows 30
+      requests per 60 seconds per client IP, shared with every other consumer
+      on that address, so the refresh is built to a fixed budget: 1 reminders
+      + 1 shifts + N logs + N weight. Companions, quick logs, and the roster
+      poll hourly. A diagnostic sensor exposes the observed count.
+  brands:
+    status: todo
+    comment: |
+      The einvault domain has not been submitted to home-assistant/brands.
+      Required before HACS default-repository listing; the HACS action
+      currently ignores this check.
+  common-modules:
+    status: done
+    comment: coordinator.py, entity.py, api.py, models.py as expected.
+  config-flow:
+    status: done
+    comment: |
+      URL and token, with a URL selector and a password field, and
+      data_description text on every field.
+  config-flow-test-coverage:
+    status: done
+    comment: |
+      Success, cannot_connect, invalid_auth, api_disabled, rate_limited,
+      write_only_token, invalid_url, duplicate abort, reauth success and
+      failure, and the options flow.
+  dependency-transparency:
+    status: done
+    comment: |
+      One dependency, ical, pinned exactly and used only to parse the
+      calendar feed's recurrence rules.
+  docs-actions:
+    status: done
+    comment: README documents all six actions and the button behaviour.
+  docs-high-level-description:
+    status: done
+  docs-installation-instructions:
+    status: done
+  docs-removal-instructions:
+    status: todo
+    comment: README does not yet describe removing the integration.
+  entity-event-setup:
+    status: done
+    comment: |
+      Calendar entities subscribe to the feed coordinator in
+      async_added_to_hass and unsubscribe via async_on_remove.
+  entity-unique-id:
+    status: done
+    comment: |
+      Derived from entry id plus companion id, never from a name, so renaming
+      a companion upstream does not move entity ids.
+  has-entity-name:
+    status: done
+  runtime-data:
+    status: done
+    comment: Typed EinVaultRuntimeData on entry.runtime_data; hass.data unused.
+  test-before-configure:
+    status: done
+    comment: |
+      The config flow checks reachability unauthenticated, then makes an
+      authenticated call that also determines the token's access level.
+  test-before-setup:
+    status: done
+    comment: |
+      The first coordinator refresh gates setup, mapping auth failure to
+      ConfigEntryAuthFailed and everything else to ConfigEntryNotReady.
+  unique-config-entry:
+    status: done
+    comment: |
+      Keyed on the normalised base URL, since EinVault exposes no instance
+      identifier. Normalisation means a trailing slash or a differing case
+      still collides.
+
+  # --- Silver -------------------------------------------------------------
+  action-exceptions:
+    status: done
+    comment: |
+      ServiceValidationError for user-correctable problems, HomeAssistantError
+      otherwise, all with translation keys. Branching is on the API error code
+      because messages are localized by the server.
+  config-entry-unloading:
+    status: done
+  docs-configuration-parameters:
+    status: done
+  docs-installation-parameters:
+    status: done
+  entity-unavailable:
+    status: done
+    comment: |
+      Companion entities go unavailable when the companion disappears
+      upstream; calendars follow the feed coordinator's success flag.
+  integration-owner:
+    status: done
+  log-when-unavailable:
+    status: done
+    comment: |
+      Rate limiting warns once per episode rather than once per entity, and
+      the coordinator keeps the last known state rather than blanking every
+      entity over a condition that clears within a minute.
+  parallel-updates:
+    status: todo
+    comment: |
+      PARALLEL_UPDATES is not declared on the platforms. Requests are already
+      serialised inside the client by a semaphore, so behaviour is correct,
+      but the constant should still be set explicitly.
+  reauthentication-flow:
+    status: done
+    comment: |
+      Required in practice: EinVault's token Rotate feature revokes the old
+      token immediately.
+  test-coverage:
+    status: done
+    comment: 128 tests, 92% statement coverage.
+
+  # --- Gold ---------------------------------------------------------------
+  devices:
+    status: done
+    comment: One device per companion, plus a service device for the instance.
+  diagnostics:
+    status: done
+    comment: |
+      Both credentials redacted, along with microchip, vet and emergency
+      contact details, sitter notes, and free-text schedules.
+  discovery:
+    status: exempt
+    comment: |
+      EinVault advertises nothing on the network — no mDNS, SSDP, or DHCP
+      signature to discover.
+  discovery-update-info:
+    status: exempt
+    comment: No discovery, so nothing to update from it.
+  docs-data-update:
+    status: done
+    comment: The call budget and polling cadence are documented in the README.
+  docs-examples:
+    status: todo
+    comment: No example automations yet.
+  docs-known-limitations:
+    status: done
+    comment: |
+      Documented: session-only endpoints are out of scope, no webhooks exist,
+      and quick logs and shifts can be legitimately empty.
+  docs-supported-devices:
+    status: exempt
+    comment: A service, not a device.
+  docs-supported-functions:
+    status: done
+  docs-troubleshooting:
+    status: done
+    comment: |
+      Covers the reverse-proxy rate-limit trap, why ADDRESS_HEADER backfires,
+      and why quick logs may not appear.
+  docs-use-cases:
+    status: todo
+  dynamic-devices:
+    status: done
+    comment: |
+      Companions added upstream gain entities on the next hourly refresh, and
+      quick-log buttons appear and disappear with the set, without a reload.
+  entity-category:
+    status: done
+  entity-device-class:
+    status: done
+  entity-disabled-by-default:
+    status: done
+    comment: The API-call diagnostic sensor is disabled by default.
+  entity-translations:
+    status: done
+    comment: |
+      Every entity except the quick-log buttons, which take the name the user
+      gave them in EinVault verbatim.
+  exception-translations:
+    status: done
+  icon-translations:
+    status: done
+  reconfiguration-flow:
+    status: todo
+    comment: |
+      The URL can only be changed by removing and re-adding the entry. Only
+      the token is changeable, through reauth.
+  repair-issues:
+    status: todo
+    comment: |
+      A write-only token and a rejected calendar feed would both be good
+      repair issues.
+  stale-devices:
+    status: todo
+    comment: |
+      Entities go unavailable when a companion is removed upstream, but the
+      device registry entry is not cleaned up.
+
+  # --- Platinum -----------------------------------------------------------
+  async-dependency:
+    status: done
+    comment: Fully async; ICS parsing runs in the executor because it is CPU-bound.
+  inject-websession:
+    status: done
+    comment: |
+      The client takes an aiohttp ClientSession and imports nothing from
+      homeassistant, so it stays independently testable.
+  strict-typing:
+    status: todo
+    comment: |
+      mypy --strict is clean, but the client lives in the integration rather
+      than in a PyPI library, which Core requires for this rule.

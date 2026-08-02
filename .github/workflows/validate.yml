@@ -24,6 +24,12 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
+          # `brands` requires the einvault domain to exist in
+          # home-assistant/brands, which is a separate pull request against
+          # that repository and cannot be satisfied from here. It must be
+          # submitted before this repo can be listed as a HACS default
+          # repository — tracked in docs/release-checklist.md.
+          ignore: brands
 
   lint:
     name: ruff
@@ -62,7 +68,9 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements-test.txt
-      - run: pytest --cov-report=xml
+      # -rA and a short traceback so a CI-only failure is diagnosable from the
+      # log alone, without having to reproduce it locally.
+      - run: pytest --cov-report=xml -rA --tb=short
       - uses: actions/upload-artifact@v4
         if: always()
         with:
