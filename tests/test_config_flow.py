@@ -20,7 +20,7 @@ from custom_components.einvault.const import (
     DOMAIN,
 )
 
-from .conftest import BASE_URL, TOKEN, load_fixture_json
+from .conftest import BASE_URL, TOKEN, load_fixture_json, mock_full_refresh
 
 USER_INPUT = {CONF_URL: BASE_URL, CONF_API_TOKEN: TOKEN}
 
@@ -220,11 +220,7 @@ async def test_options_flow_saves(hass: HomeAssistant, mock_config_entry: MockCo
     mock_config_entry.add_to_hass(hass)
 
     with aioresponses() as mocked:
-        mocked.get(
-            f"{BASE_URL}/api/companions",
-            payload=load_fixture_json("companions.json"),
-            repeat=True,
-        )
+        mock_full_refresh(mocked)
         assert await hass.config_entries.async_setup(mock_config_entry.entry_id)
         await hass.async_block_till_done()
 
@@ -254,11 +250,7 @@ async def test_options_flow_enforces_minimum_interval(
     mock_config_entry.add_to_hass(hass)
 
     with aioresponses() as mocked:
-        mocked.get(
-            f"{BASE_URL}/api/companions",
-            payload=load_fixture_json("companions.json"),
-            repeat=True,
-        )
+        mock_full_refresh(mocked)
         assert await hass.config_entries.async_setup(mock_config_entry.entry_id)
         await hass.async_block_till_done()
 

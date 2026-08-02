@@ -7,18 +7,14 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from .conftest import BASE_URL, load_fixture_json
+from .conftest import BASE_URL, endpoint, load_fixture_json, mock_full_refresh
 
 
 async def test_setup_and_unload(hass: HomeAssistant, mock_config_entry: MockConfigEntry) -> None:
     mock_config_entry.add_to_hass(hass)
 
     with aioresponses() as mocked:
-        mocked.get(
-            f"{BASE_URL}/api/companions",
-            payload=load_fixture_json("companions.json"),
-            repeat=True,
-        )
+        mock_full_refresh(mocked)
         assert await hass.config_entries.async_setup(mock_config_entry.entry_id)
         await hass.async_block_till_done()
 
@@ -36,7 +32,7 @@ async def test_setup_retries_when_unreachable(
     mock_config_entry.add_to_hass(hass)
 
     with aioresponses() as mocked:
-        mocked.get(f"{BASE_URL}/api/companions", exception=TimeoutError(), repeat=True)
+        mocked.get(endpoint("/api/companions"), exception=TimeoutError(), repeat=True)
         await hass.config_entries.async_setup(mock_config_entry.entry_id)
         await hass.async_block_till_done()
 
@@ -51,7 +47,7 @@ async def test_revoked_token_triggers_reauth(
 
     with aioresponses() as mocked:
         mocked.get(
-            f"{BASE_URL}/api/companions",
+            endpoint("/api/companions"),
             status=401,
             payload=load_fixture_json("error_invalid_token.json"),
             repeat=True,
@@ -71,7 +67,7 @@ async def test_api_disabled_retries(
 
     with aioresponses() as mocked:
         mocked.get(
-            f"{BASE_URL}/api/companions",
+            endpoint("/api/companions"),
             status=404,
             body="<!doctype html><html></html>",
             content_type="text/html",

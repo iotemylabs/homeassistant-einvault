@@ -1,8 +1,4 @@
-"""The EinVault integration.
-
-Phase 1 establishes the client and config entry lifecycle. The coordinator and
-entity platforms arrive in phase 2, which is why ``PLATFORMS`` is still empty.
-"""
+"""The EinVault integration."""
 
 from __future__ import annotations
 
@@ -23,10 +19,11 @@ from .api import (
     EinVaultRateLimitError,
 )
 from .const import CONF_API_TOKEN, CONF_URL
+from .coordinator import EinVaultDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = []
+PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 
 @dataclass
@@ -34,6 +31,7 @@ class EinVaultRuntimeData:
     """Objects shared across the entry's platforms."""
 
     client: EinVaultClient
+    coordinator: EinVaultDataUpdateCoordinator
 
 
 type EinVaultConfigEntry = ConfigEntry[EinVaultRuntimeData]
@@ -43,11 +41,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: EinVaultConfigEntry) -> 
     """Set up EinVault from a config entry."""
     session = async_get_clientsession(hass)
     client = EinVaultClient(entry.data[CONF_URL], entry.data[CONF_API_TOKEN], session)
+    coordinator = EinVaultDataUpdateCoordinator(hass, entry, client)
 
-    # One authenticated call proves the instance is reachable, the bearer API
-    # is enabled, and the token is still valid — the three ways setup fails.
+    # The first refresh doubles as the setup check: it proves the instance is
+    # reachable, the bearer API is enabled, and the token is still valid.
     try:
-        await client.async_get_companions()
+        await coordinator.async_config_entry_first_refresh()
+    except ConfigEntryAuthFailed:
+        raise
     except EinVaultAuthError as err:
         raise ConfigEntryAuthFailed(
             "The EinVault API token was rejected. It may have been rotated or revoked."
@@ -61,7 +62,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: EinVaultConfigEntry) -> 
     except EinVaultConnectionError as err:
         raise ConfigEntryNotReady(str(err)) from err
 
-    entry.runtime_data = EinVaultRuntimeData(client=client)
+    entry.runtime_data = EinVaultRuntimeData(client=client, coordinator=coordinator)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))

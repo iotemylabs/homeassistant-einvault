@@ -6,8 +6,22 @@
 Home Assistant integration for a self-hosted [EinVault](https://github.com/davefatkin/EinVault)
 instance — companion (pet) health and care tracking.
 
-> **Status: phase 1 of 6.** The client, config flow, and CI are in place. Entities arrive in
-> phase 2. Installing it now gives you a working config entry and nothing else yet.
+> **Status: phase 2 of 6.** Client, config flow, coordinator, companion devices, and the
+> `last_*` / weight sensors are in place. Reminder and shift sensors (phase 3), quick-log
+> buttons and actions (phase 4), and the calendar (phase 5) are still to come.
+
+## Entities
+
+One device per companion, plus a service device for the instance itself.
+
+| Entity | Type | Notes |
+|---|---|---|
+| `last_walk`, `last_meal`, `last_bathroom`, `last_play`, `last_grooming`, `last_treat` | timestamp | Newest event of that type. Attributes: `subtypes`, `duration_minutes`, `notes`. |
+| `latest_weight` | weight, measurement | Unit from the companion's `weightUnit`, falling back to the unit on the entry itself since the former is nullable. |
+| `api_calls_last_refresh` | diagnostic | Disabled by default. Enable it to watch the request budget. |
+
+A companion added in EinVault gets entities on the next hourly refresh, with no reload. One
+archived or removed upstream goes unavailable rather than freezing on a stale value.
 
 ---
 

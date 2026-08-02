@@ -1,0 +1,30 @@
+{
+  "entity": {
+    "sensor": {
+      "last_walk": {
+        "default": "mdi:walk"
+      },
+      "last_meal": {
+        "default": "mdi:food-drumstick"
+      },
+      "last_bathroom": {
+        "default": "mdi:toilet"
+      },
+      "last_play": {
+        "default": "mdi:tennis-ball"
+      },
+      "last_grooming": {
+        "default": "mdi:content-cut"
+      },
+      "last_treat": {
+        "default": "mdi:bone"
+      },
+      "latest_weight": {
+        "default": "mdi:scale-bathroom"
+      },
+      "api_calls_last_refresh": {
+        "default": "mdi:swap-vertical"
+      }
+    }
+  }
+}

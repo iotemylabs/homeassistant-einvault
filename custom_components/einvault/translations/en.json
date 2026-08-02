@@ -52,5 +52,33 @@
         }
       }
     }
+  },
+  "entity": {
+    "sensor": {
+      "last_walk": {
+        "name": "Last walk"
+      },
+      "last_meal": {
+        "name": "Last meal"
+      },
+      "last_bathroom": {
+        "name": "Last bathroom"
+      },
+      "last_play": {
+        "name": "Last play"
+      },
+      "last_grooming": {
+        "name": "Last grooming"
+      },
+      "last_treat": {
+        "name": "Last treat"
+      },
+      "latest_weight": {
+        "name": "Weight"
+      },
+      "api_calls_last_refresh": {
+        "name": "API calls last refresh"
+      }
+    }
   }
 }

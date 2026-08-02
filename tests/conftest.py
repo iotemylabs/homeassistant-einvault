@@ -9,9 +9,11 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import sys
 from typing import Any
 
+from aioresponses import aioresponses
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -84,4 +86,46 @@ def mock_config_entry() -> MockConfigEntry:
         title="192.168.1.246:7387",
         unique_id=BASE_URL,
         data={CONF_URL: BASE_URL, CONF_API_TOKEN: TOKEN},
+    )
+
+
+def endpoint(path: str) -> re.Pattern[str]:
+    """Match an endpoint regardless of its query string.
+
+    The client appends pagination parameters to most reads, and aioresponses
+    matches on the full URL, so bare paths would never match. Matching on the
+    path keeps these tests about the call budget rather than about exact query
+    formatting.
+    """
+    return re.compile(rf"^{re.escape(BASE_URL + path)}(\?.*)?$")
+
+
+def mock_full_refresh(mocked: aioresponses, *, repeat: bool = True) -> None:
+    """Register every endpoint a refresh touches."""
+    mocked.get(
+        endpoint("/api/companions"),
+        payload=load_fixture_json("companions.json"),
+        repeat=repeat,
+    )
+    mocked.get(
+        endpoint("/api/quick-logs"),
+        payload=load_fixture_json("quick_logs_empty.json"),
+        repeat=repeat,
+    )
+    mocked.get(endpoint("/api/users"), payload=load_fixture_json("users.json"), repeat=repeat)
+    mocked.get(
+        endpoint("/api/reminders"),
+        payload={"reminders": [], "hasMore": False},
+        repeat=repeat,
+    )
+    mocked.get(endpoint("/api/shifts"), payload={"shifts": [], "hasMore": False}, repeat=repeat)
+    mocked.get(
+        endpoint("/api/logs"),
+        payload=load_fixture_json("logs_cindy.json"),
+        repeat=repeat,
+    )
+    mocked.get(
+        endpoint("/api/weight"),
+        payload=load_fixture_json("weight_lilly.json"),
+        repeat=repeat,
     )
