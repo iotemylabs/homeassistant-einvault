@@ -17,6 +17,11 @@ from .coordinator import EinVaultDataUpdateCoordinator
 from .entity import EinVaultCompanionEntity, EinVaultInstanceEntity
 from .models import Companion, Shift
 
+# The coordinator owns all polling and the client serialises every request
+# through a semaphore, so Home Assistant does not need to throttle this
+# platform on top of that.
+PARALLEL_UPDATES = 0
+
 
 async def async_setup_entry(
     hass: HomeAssistant,

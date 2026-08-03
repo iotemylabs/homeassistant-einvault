@@ -23,6 +23,11 @@ from .coordinator import EinVaultDataUpdateCoordinator
 from .entity import EinVaultCompanionEntity, EinVaultInstanceEntity
 from .models import Companion, LogEvent, Reminder
 
+# The coordinator owns all polling and the client serialises every request
+# through a semaphore, so Home Assistant does not need to throttle this
+# platform on top of that.
+PARALLEL_UPDATES = 0
+
 # `other` is deliberately absent: a generic "something happened" timestamp is
 # not a useful sensor, and it would collide with the more specific ones.
 LAST_EVENT_TYPES: tuple[str, ...] = (

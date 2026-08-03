@@ -37,6 +37,11 @@ if TYPE_CHECKING:
 
 _LOGGER = logging.getLogger(__name__)
 
+# The coordinator owns all polling and the client serialises every request
+# through a semaphore, so Home Assistant does not need to throttle this
+# platform on top of that.
+PARALLEL_UPDATES = 0
+
 SHIFT_CATEGORY = "shift"
 
 

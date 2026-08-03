@@ -27,7 +27,7 @@ rules:
     comment: |
       The einvault domain has not been submitted to home-assistant/brands.
       Required before HACS default-repository listing; the HACS action
-      currently ignores this check.
+      currently ignores this single check. Every other HACS check passes.
   common-modules:
     status: done
     comment: coordinator.py, entity.py, api.py, models.py as expected.
@@ -55,8 +55,8 @@ rules:
   docs-installation-instructions:
     status: done
   docs-removal-instructions:
-    status: todo
-    comment: README does not yet describe removing the integration.
+    status: done
+    comment: README has a Removal section covering HACS and manual installs.
   entity-event-setup:
     status: done
     comment: |
@@ -116,11 +116,11 @@ rules:
       the coordinator keeps the last known state rather than blanking every
       entity over a condition that clears within a minute.
   parallel-updates:
-    status: todo
+    status: done
     comment: |
-      PARALLEL_UPDATES is not declared on the platforms. Requests are already
-      serialised inside the client by a semaphore, so behaviour is correct,
-      but the constant should still be set explicitly.
+      PARALLEL_UPDATES = 0 on every platform. The coordinator owns polling and
+      the client serialises every request through a semaphore, so Home
+      Assistant does not need to throttle on top of that.
   reauthentication-flow:
     status: done
     comment: |
@@ -128,7 +128,7 @@ rules:
       token immediately.
   test-coverage:
     status: done
-    comment: 128 tests, 92% statement coverage.
+    comment: 137 tests, 92% statement coverage.
 
   # --- Gold ---------------------------------------------------------------
   devices:

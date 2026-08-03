@@ -32,6 +32,10 @@ from .models import QuickLog
 
 _LOGGER = logging.getLogger(__name__)
 
+# Presses go through the same serialising client as everything else, so
+# concurrent presses cannot burst the server's 30-request/60-second budget.
+PARALLEL_UPDATES = 0
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
