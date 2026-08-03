@@ -128,7 +128,9 @@ rules:
       token immediately.
   test-coverage:
     status: done
-    comment: 137 tests, 92% statement coverage.
+    comment: |
+      143 tests, 92% statement coverage, including syrupy snapshots of the
+      full entity and device registry across all four platforms.
 
   # --- Gold ---------------------------------------------------------------
   devices:

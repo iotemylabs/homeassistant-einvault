@@ -1,0 +1,1530 @@
+# serializer version: 1
+# name: test_device_registry_snapshot
+  list([
+    dict({
+      'identifiers': list([
+        '<entry_id>',
+      ]),
+      'manufacturer': 'EinVault',
+      'model': 'Instance',
+      'model_id': None,
+      'name': '192.168.1.246:7387',
+      'via_device': False,
+    }),
+    dict({
+      'identifiers': list([
+        '<entry_id>_gnc6gumwexrp3cs',
+      ]),
+      'manufacturer': 'EinVault',
+      'model': 'Companion',
+      'model_id': 'American Longhair',
+      'name': 'Cindy',
+      'via_device': True,
+    }),
+    dict({
+      'identifiers': list([
+        '<entry_id>_ztmzsi6kq5lc2wl',
+      ]),
+      'manufacturer': 'EinVault',
+      'model': 'Companion',
+      'model_id': 'German Shepherd',
+      'name': 'Lilly',
+      'via_device': True,
+    }),
+  ])
+# ---
+# name: test_entity_registry_snapshot[binary_sensor][binary_sensor.192_168_1_246_7387_caretaker_on_shift-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.192_168_1_246_7387_caretaker_on_shift',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.OCCUPANCY: 'occupancy'>,
+    'original_icon': None,
+    'original_name': 'Caretaker on shift',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'caretaker_on_shift',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_caretaker_on_shift',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[binary_sensor][binary_sensor.192_168_1_246_7387_caretaker_on_shift-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'caretakers': list([
+        'Alex Doe',
+      ]),
+      'device_class': 'occupancy',
+      'friendly_name': '192.168.1.246:7387 Caretaker on shift',
+      'shift_ends_at': HAFakeDatetime(2026, 8, 2, 20, 0, tzinfo=datetime.timezone.utc),
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.192_168_1_246_7387_caretaker_on_shift',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'on',
+  })
+# ---
+# name: test_entity_registry_snapshot[binary_sensor][binary_sensor.cindy_reminder_overdue-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.cindy_reminder_overdue',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Reminder overdue',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'reminder_overdue',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_reminder_overdue',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[binary_sensor][binary_sensor.cindy_reminder_overdue-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'problem',
+      'friendly_name': 'Cindy Reminder overdue',
+      'overdue_count': 1,
+      'titles': list([
+        'Get Blood Work',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.cindy_reminder_overdue',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'on',
+  })
+# ---
+# name: test_entity_registry_snapshot[binary_sensor][binary_sensor.lilly_reminder_overdue-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.lilly_reminder_overdue',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.PROBLEM: 'problem'>,
+    'original_icon': None,
+    'original_name': 'Reminder overdue',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'reminder_overdue',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_reminder_overdue',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[binary_sensor][binary_sensor.lilly_reminder_overdue-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'problem',
+      'friendly_name': 'Lilly Reminder overdue',
+      'overdue_count': 0,
+      'titles': list([
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.lilly_reminder_overdue',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entity_registry_snapshot[button][button.192_168_1_246_7387_feed_both-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'button',
+    'entity_category': None,
+    'entity_id': 'button.192_168_1_246_7387_feed_both',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Feed both',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_quick_log_ql-feed-both',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[button][button.192_168_1_246_7387_feed_both-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'activity_type': 'meal',
+      'companion_count': 2,
+      'duration_minutes': None,
+      'friendly_name': '192.168.1.246:7387 Feed both',
+      'quick_log_id': 'ql-feed-both',
+      'subtypes': list([
+        'dinner',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'button.192_168_1_246_7387_feed_both',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[button][button.cindy_evening_walk-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'button',
+    'entity_category': None,
+    'entity_id': 'button.cindy_evening_walk',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Evening walk',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_quick_log_ql-evening-walk',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[button][button.cindy_evening_walk-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'activity_type': 'walk',
+      'companion_count': 1,
+      'duration_minutes': 30,
+      'friendly_name': 'Cindy Evening walk',
+      'quick_log_id': 'ql-evening-walk',
+      'subtypes': list([
+        'leash',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'button.cindy_evening_walk',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[calendar][calendar.192_168_1_246_7387_caretaker_shifts-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'calendar',
+    'entity_category': None,
+    'entity_id': 'calendar.192_168_1_246_7387_caretaker_shifts',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Caretaker shifts',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'shift_calendar',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_shift_calendar',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[calendar][calendar.192_168_1_246_7387_caretaker_shifts-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'all_day': False,
+      'description': '',
+      'end_time': '2026-08-03 17:00:00',
+      'friendly_name': '192.168.1.246:7387 Caretaker shifts',
+      'location': '',
+      'message': 'Caretaker shift',
+      'note': 'Shifts exist only for caretaker-role users and are created in EinVault under Admin, Users.',
+      'start_time': '2026-08-03 09:00:00',
+    }),
+    'context': <ANY>,
+    'entity_id': 'calendar.192_168_1_246_7387_caretaker_shifts',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entity_registry_snapshot[calendar][calendar.cindy_calendar-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'calendar',
+    'entity_category': None,
+    'entity_id': 'calendar.cindy_calendar',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Calendar',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'companion',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_calendar',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[calendar][calendar.cindy_calendar-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'all_day': False,
+      'description': '',
+      'end_time': '2027-01-25 08:30:00',
+      'friendly_name': 'Cindy Calendar',
+      'location': '',
+      'message': '[Cindy] Change Flea Collar',
+      'start_time': '2027-01-25 08:00:00',
+    }),
+    'context': <ANY>,
+    'entity_id': 'calendar.cindy_calendar',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entity_registry_snapshot[calendar][calendar.lilly_calendar-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'calendar',
+    'entity_category': None,
+    'entity_id': 'calendar.lilly_calendar',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Calendar',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'companion',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_calendar',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[calendar][calendar.lilly_calendar-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'all_day': False,
+      'description': '',
+      'end_time': '2026-09-25 07:30:00',
+      'friendly_name': 'Lilly Calendar',
+      'location': '',
+      'message': '[Lilly] File Property Taxes for Dog',
+      'start_time': '2026-09-25 07:00:00',
+    }),
+    'context': <ANY>,
+    'entity_id': 'calendar.lilly_calendar',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.192_168_1_246_7387_api_calls_last_refresh-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.192_168_1_246_7387_api_calls_last_refresh',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'API calls last refresh',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'api_calls_last_refresh',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_api_calls_last_refresh',
+    'unit_of_measurement': 'calls',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.192_168_1_246_7387_api_calls_last_refresh-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': '192.168.1.246:7387 API calls last refresh',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': 'calls',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.192_168_1_246_7387_api_calls_last_refresh',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '11',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_due_reminders-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_due_reminders',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Due reminders',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'due_reminders',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_due_reminders',
+    'unit_of_measurement': 'reminders',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_due_reminders-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Cindy Due reminders',
+      'overdue': 1,
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': 'reminders',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_due_reminders',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_bathroom-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_last_bathroom',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last bathroom',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_bathroom',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_last_bathroom',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_bathroom-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'duration_minutes': None,
+      'friendly_name': 'Cindy Last bathroom',
+      'notes': None,
+      'subtypes': list([
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_last_bathroom',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-08-01T19:49:00+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_grooming-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_last_grooming',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last grooming',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_grooming',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_last_grooming',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_grooming-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'friendly_name': 'Cindy Last grooming',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_last_grooming',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_meal-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_last_meal',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last meal',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_meal',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_last_meal',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_meal-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'duration_minutes': None,
+      'friendly_name': 'Cindy Last meal',
+      'notes': None,
+      'subtypes': list([
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_last_meal',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-08-02T20:00:45+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_play-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_last_play',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last play',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_play',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_last_play',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_play-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'friendly_name': 'Cindy Last play',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_last_play',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_treat-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_last_treat',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last treat',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_treat',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_last_treat',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_treat-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'friendly_name': 'Cindy Last treat',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_last_treat',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_walk-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_last_walk',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last walk',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_walk',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_last_walk',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_last_walk-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'duration_minutes': 15,
+      'friendly_name': 'Cindy Last walk',
+      'notes': 'ha-einvault phase-1 probe',
+      'subtypes': list([
+        'leash',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_last_walk',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-08-02T20:01:09+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_mood_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': dict({
+      'options': list([
+        'great',
+        'good',
+        'meh',
+        'off',
+        'sick',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_mood_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'Mood today',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'today_mood',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_today_mood',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_mood_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'enum',
+      'friendly_name': 'Cindy Mood today',
+      'has_body': True,
+      'options': list([
+        'great',
+        'good',
+        'meh',
+        'off',
+        'sick',
+      ]),
+      'updated_at': '2026-08-02T20:01:27+00:00',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_mood_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'great',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_next_reminder-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_next_reminder',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Next reminder',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'next_reminder',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_next_reminder',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_next_reminder-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'description': 'Needs full workup.',
+      'device_class': 'timestamp',
+      'friendly_name': 'Cindy Next reminder',
+      'is_recurring': False,
+      'reminder_id': 'rpfrzohwk2vuihd',
+      'title': 'Get Blood Work',
+      'type': 'vet',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_next_reminder',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-08-01T18:00:00+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_weight-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.cindy_weight',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.WEIGHT: 'weight'>,
+    'original_icon': None,
+    'original_name': 'Weight',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'latest_weight',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_gnc6gumwexrp3cs_latest_weight',
+    'unit_of_measurement': <UnitOfMass.POUNDS: 'lb'>,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.cindy_weight-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'weight',
+      'friendly_name': 'Cindy Weight',
+      'notes': None,
+      'recorded_at': '2025-02-21T17:00:00+00:00',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfMass.POUNDS: 'lb'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.cindy_weight',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '46.0',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_due_reminders-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_due_reminders',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Due reminders',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'due_reminders',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_due_reminders',
+    'unit_of_measurement': 'reminders',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_due_reminders-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'friendly_name': 'Lilly Due reminders',
+      'overdue': 0,
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': 'reminders',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_due_reminders',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_bathroom-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_last_bathroom',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last bathroom',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_bathroom',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_last_bathroom',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_bathroom-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'duration_minutes': None,
+      'friendly_name': 'Lilly Last bathroom',
+      'notes': None,
+      'subtypes': list([
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_last_bathroom',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-08-01T19:49:00+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_grooming-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_last_grooming',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last grooming',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_grooming',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_last_grooming',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_grooming-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'friendly_name': 'Lilly Last grooming',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_last_grooming',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_meal-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_last_meal',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last meal',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_meal',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_last_meal',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_meal-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'duration_minutes': None,
+      'friendly_name': 'Lilly Last meal',
+      'notes': None,
+      'subtypes': list([
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_last_meal',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-08-02T20:00:45+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_play-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_last_play',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last play',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_play',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_last_play',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_play-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'friendly_name': 'Lilly Last play',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_last_play',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_treat-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_last_treat',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last treat',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_treat',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_last_treat',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_treat-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'friendly_name': 'Lilly Last treat',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_last_treat',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_walk-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_last_walk',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Last walk',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'last_walk',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_last_walk',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_last_walk-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'timestamp',
+      'duration_minutes': 15,
+      'friendly_name': 'Lilly Last walk',
+      'notes': 'ha-einvault phase-1 probe',
+      'subtypes': list([
+        'leash',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_last_walk',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-08-02T20:01:09+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_mood_today-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': dict({
+      'options': list([
+        'great',
+        'good',
+        'meh',
+        'off',
+        'sick',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_mood_today',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.ENUM: 'enum'>,
+    'original_icon': None,
+    'original_name': 'Mood today',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'today_mood',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_today_mood',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_mood_today-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'enum',
+      'friendly_name': 'Lilly Mood today',
+      'has_body': True,
+      'options': list([
+        'great',
+        'good',
+        'meh',
+        'off',
+        'sick',
+      ]),
+      'updated_at': '2026-08-02T20:01:27+00:00',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_mood_today',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'great',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_next_reminder-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_next_reminder',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.TIMESTAMP: 'timestamp'>,
+    'original_icon': None,
+    'original_name': 'Next reminder',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'next_reminder',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_next_reminder',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_next_reminder-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'description': 'Need to file.',
+      'device_class': 'timestamp',
+      'friendly_name': 'Lilly Next reminder',
+      'is_recurring': True,
+      'reminder_id': 'wm6nqqbobtbqyus',
+      'title': 'File Property Taxes for Dog',
+      'type': 'other',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_next_reminder',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2026-09-25T12:00:00+00:00',
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_weight-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': dict({
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.lilly_weight',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.WEIGHT: 'weight'>,
+    'original_icon': None,
+    'original_name': 'Weight',
+    'platform': 'einvault',
+    'previous_unique_id': None,
+    'supported_features': 0,
+    'translation_key': 'latest_weight',
+    'unique_id': '01JQ8ZK9ABCDEFGHJKMNPQRSTV_ztmzsi6kq5lc2wl_latest_weight',
+    'unit_of_measurement': <UnitOfMass.POUNDS: 'lb'>,
+  })
+# ---
+# name: test_entity_registry_snapshot[sensor][sensor.lilly_weight-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'weight',
+      'friendly_name': 'Lilly Weight',
+      'notes': None,
+      'recorded_at': '2025-02-21T17:00:00+00:00',
+      'state_class': <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'unit_of_measurement': <UnitOfMass.POUNDS: 'lb'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.lilly_weight',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '46.0',
+  })
+# ---

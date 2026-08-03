@@ -6,10 +6,12 @@
 Home Assistant integration for a self-hosted [EinVault](https://github.com/davefatkin/EinVault)
 instance — companion (pet) health and care tracking.
 
-> **Status: phase 5 of 6.** All entities, actions, calendars, and diagnostics are in place.
-> Remaining: snapshot tests and final hardening (phase 6). See
+> **Status: feature complete.** All six phases are done and CI is green — hassfest, HACS,
+> ruff, mypy strict, and 143 tests. See
 > [docs/release-checklist.md](docs/release-checklist.md) for the pre-release steps that live
-> outside this repository.
+> outside this repository, and
+> [`quality_scale.yaml`](custom_components/einvault/quality_scale.yaml) for the remaining
+> known gaps.
 
 ## Entities
 
@@ -239,6 +241,10 @@ pytest
 ruff check custom_components tests
 mypy custom_components/einvault
 ```
+
+Snapshots live in `tests/__snapshots__/`. Regenerate them with `pytest --snapshot-update`
+after an intentional entity change, and read the diff before committing — that diff is the
+review.
 
 The client in `custom_components/einvault/api.py` imports nothing from `homeassistant` and is
 tested in isolation. The one third-party requirement is

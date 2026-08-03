@@ -7,15 +7,19 @@ nullability — notably ``subtypes: null`` and ``entry: null``.
 
 from __future__ import annotations
 
+from collections.abc import Generator
 import json
 import pathlib
 import re
 import sys
 from typing import Any
+from unittest.mock import PropertyMock, patch
 
 from aioresponses import aioresponses
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotExtension
+from syrupy.assertion import SnapshotAssertion
 
 from custom_components.einvault.const import CONF_API_TOKEN, CONF_URL, DOMAIN
 
@@ -65,6 +69,37 @@ def pytest_configure(config: pytest.Config) -> None:
     pytest_socket.disable_socket = lambda **kwargs: None  # type: ignore[assignment]
 
 
+@pytest.fixture
+def snapshot(snapshot: SnapshotAssertion) -> SnapshotAssertion:
+    """Apply Home Assistant's snapshot serializer.
+
+    pytest-homeassistant-custom-component ships this same override, but syrupy
+    registers its own ``snapshot`` fixture and wins the plugin ordering, so the
+    plain Amber extension ends up active and registry entries serialize as raw
+    reprs — including ``id`` and ``device_id``, which are regenerated on every
+    run and would make the snapshots unstable. Redefining it here takes
+    precedence over both plugins.
+    """
+    return snapshot.use_extension(HomeAssistantSnapshotExtension)
+
+
+@pytest.fixture
+def entity_registry_enabled_by_default() -> Generator[None]:
+    """Force every entity to register enabled.
+
+    Home Assistant Core ships this fixture but this version of
+    pytest-homeassistant-custom-component does not re-export it, and
+    ``snapshot_platform`` refuses to run while any entity is disabled. The
+    diagnostic call-count sensor ships disabled on purpose, which
+    ``test_sensor.py`` asserts separately.
+    """
+    with patch(
+        "homeassistant.helpers.entity.Entity.entity_registry_enabled_default",
+        PropertyMock(return_value=True),
+    ):
+        yield
+
+
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(request: pytest.FixtureRequest) -> None:
     """Allow this custom integration to load, but only for tests that use hass.
@@ -77,6 +112,15 @@ def auto_enable_custom_integrations(request: pytest.FixtureRequest) -> None:
         request.getfixturevalue("enable_custom_integrations")
 
 
+ENTRY_ID = "01JQ8ZK9ABCDEFGHJKMNPQRSTV"
+"""Pinned so snapshots stay stable.
+
+Entity unique ids are built from the config entry id, and device ids are
+derived from the device identifiers, which contain it too. With a randomly
+generated entry id every snapshot would differ on every run.
+"""
+
+
 @pytest.fixture
 def mock_config_entry() -> MockConfigEntry:
     """Return a config entry matching what the config flow would create."""
@@ -84,6 +128,7 @@ def mock_config_entry() -> MockConfigEntry:
         domain=DOMAIN,
         title="192.168.1.246:7387",
         unique_id=BASE_URL,
+        entry_id=ENTRY_ID,
         data={CONF_URL: BASE_URL, CONF_API_TOKEN: TOKEN},
     )
 
